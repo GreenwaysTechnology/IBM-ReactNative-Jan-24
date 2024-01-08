@@ -1,0 +1,542 @@
+
+What is ES 6?
+  IT is just version no of javascript language.
+
+What is javascript?
+   Javascript is Object based,functional style programming language.
+
+Version of Javascript:
+
+Javascript language created for browsers in 1995 for building dynamic web pages by NetsCap Communication.
+
+After javascript language created, the language was submitted to standard body called
+"ECMA" international
+
+After submission, the language was standarized and released by committee.
+
+1.ES 1.0 -->1996
+2.ES 3.0 -->1999
+3.ES 4.0 -->2006
+4.ES 5.0 --->2007
+5.ES 6.0 --->2012-2015
+6.ES 7.0 ----->2016
+etc.....
+
+Javascript learning path(ES6):
+..............................
+1.Language fundamentals
+2.Functions 
+3.Objects
+
+1.Language fundamentals
+ ->Variables
+ ->Literals
+ ->Type Systems
+
+
+1.variable declarations
+ 
+ let /const - es 6 keywords
+eg:
+ let firstName
+
+2.literals -values
+   strings,numbers,boolean,undefined,NaN,infinity,function,null,object
+
+
+3.Data types
+   js is dynamic typed language-the type of variable is understood only during runtime.
+  int a =10 - strongly typed
+  let a =20 - dynamic typed
+
+
+Running Env:
+
+1.node js - command line
+2.Browser
+3.Mobile
+
+Live Server plugin for vs code.
+
+
+
+E:\session\IBM\2023\July\reactnative\es6apps>node src/index.js
+
+
+If you want to run inside browser..
+
+index.html
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script src="src/index.js"></script>
+</body>
+</html>
+....................................................................................
+				Variables,data types,Literals
+.....................................................................................
+
+JS is dynamically typed,so type is not declared in advance, type of variables are decided during runtime, based on "literals-values"
+
+Js has 9 literals but only 6 types.
+
+strings,numbers,boolean,undefined,object,function- types
+
+
+Strings:
+//strings : "",'',``,${}
+//Strings
+let firstName = "Subramanian"
+let lastName = 'Murugan'
+//back tick and string interpolation
+let fullName = firstName + lastName // traditional 
+console.log('Name' + firstName)
+//back tick 
+fullName = `${firstName} ${lastName}`
+console.log(`Full Name ${fullName}`) // string interpoltion
+
+//multi line strings
+let doc = `
+   <html>
+      <head>
+          <title></title>
+      </head>
+    <body>
+    </body>
+ </html>
+`
+console.log(doc)
+
+Numbers:
+ only type called number 
+ 64 bit aka double.
+
+//numbers
+let a = 10
+let b = 20
+let c = a + b 
+console.log(`c ${c}`)
+
+Booleans:
+ true or false
+
+//true or false 
+
+let isValid = true
+let isEnabled = false
+console.log(`Valid ${isValid} Enabled ${isEnabled}`)
+
+
+Undefined:
+ Variable is declared without any valid value.
+
+let price;
+console.log(`Price is ${price}`)
+
+NaN : Not a Number
+
+NaN is number only which represents "error".
+If you do any numerical computation, if computation is failed you will get NaN.
+NaN is kind of "error".
+if you get NaN you have to fix beacuse is bug
+
+NaN Use case:
+if you do computation against undefined values, you get NaN.
+
+let price;
+let qty = 100;
+let totalPrice = price * qty; //undefined * 100
+console.log(`Total Price is ${totalPrice}`)
+
+
+
+Infinity:
+  Div/0
+//infnity
+let price = 100;
+let avgPrice = price / 0
+console.log(`Avg Price ${avgPrice}`)
+
+..................................................................................
+			Advanced Boolean
+..................................................................................
+What can be true or false?
+
+decision making : if..else ,tenary operator
+
+in javascript is every thing is true execept the following values 
+
+Falsy values
+
+ * 
+ *  1.boolean false
+ *  2.Empty string "" ,''
+ *  3.0
+ *  4.undefined
+ *  5.NaN
+ *  6.null
+ */
+
+//advanced booleans 
+
+let message = 'Hello'
+
+if (message) {
+    console.log(message)
+} else {
+    console.log('wrong')
+}
+message = ''
+if (message) {
+    console.log(message)
+} else {
+    console.log('wrong')
+}
+let myvar;
+if (myvar) {
+    console.log(`MyVar is ${myvar}`)
+} else {
+    console.log(`MyVar is ${myvar}`)
+}
+myvar = 0
+if (myvar) {
+    console.log(`MyVar is ${myvar}`)
+} else {
+    console.log(`MyVar is ${myvar}`)
+}
+myvar = false
+if (myvar) {
+    console.log(`MyVar is ${myvar}`)
+} else {
+    console.log(`MyVar is ${myvar}`)
+}
+....................................................................................
+				Operator -Equal
+.....................................................................................
+
+== ->Double equal
+=== ->Triple equal
+!==
+!===
+
+let a = 10;
+let b = 10;
+
+if (a == b) {
+    console.log('a and b are equal')
+} else {
+    console.log('a and b are not equal')
+}
+
+let x = 10;
+let y = "10"
+
+if (x == y) {
+    console.log('x and y are equal')
+} else {
+    console.log('x and y are not equal')
+}
+
+
+if (x === y) {
+    console.log('x and y are equal')
+} else {
+    console.log('x and y are not equal')
+}
+
+const:
+   it is read only where as let is reassignable.
+
+let a = 10;
+console.log(`a ${a}`)
+a = 90
+console.log(`a ${a}`)
+
+const b = 90;
+console.log(`b ${b}`)
+b = 90
+console.log(`b ${b}`)
+.....................................................................................
+			   Functions
+....................................................................................
+
+functions are building block of javascript language.
+functions encapsulate the logic of application.
+functions may take args and return values
+
+
+//basic function declaration
+
+function sayHello() {
+    console.log('hello')
+}
+//invoke function 
+sayHello()
+
+
+Function args and parameters:
+.............................
+
+//args and parameters 
+
+function add(a, b) {
+    let c = a + b
+    console.log(`c ${c}`)
+}
+add(10, 10) 
+
+Default args and parameters:
+//default args
+function add(a = 0, b = 0) {
+    console.log(`a ${a} b ${b}`)
+    let c = a + b
+    console.log(`c ${c}`)
+}
+add(10, 10)
+add()
+
+Return Values:
+//default args
+function add(a = 0, b = 0) {
+    console.log(`a ${a} b ${b}`)
+    return a + b
+}
+console.log(add(10, 10))
+console.log(add())
+....................................................................................
+
+			  Functional Programming
+....................................................................................
+According to functional programming, function is just value like numbers,strings.
+
+since function is value can be assigned to a variable.
+
+If you assign the function with variable, then that function can be called with variableName.
+
+if you declare function with variables, without function name called "Anonymous function".
+
+//a is variable
+//let is keyword
+//10 is literal - number literal
+let a = 10;
+//function itself is literal accoriding to functional programming.
+
+//hello is just variable,holding function value(literal)
+let hello = function () {
+    console.log('hello')
+}
+//since function is value , can be assigned to variable, later that variable can be used to invoke that function. 
+//function without name is called anonymous function 
+hello()
+
+............
+
+AnonyMous functions and args values:
+......................................
+
+//anonymous fun and args 
+
+let add = function (a = 0, b = 0) {
+    let c = a + b
+    console.log(`C ${c}`)
+}
+
+add(10, 10)
+add()
+
+anonymous functions and return values:
+//anonymous fun and args 
+
+let add = function (a = 0, b = 0) {
+    let c = a + b
+    return c 
+}
+
+console.log(add(10, 10))
+console.log(add())
+.....................................................................................
+			ES 6 Anonymous functions -Arrow functions
+.....................................................................................
+
+Arrow function are only going to be used inside react.
+
+Arrow functions are refactored version of es 5 anonymous functions 
+
+//arrow function 
+
+//es 5 version of anonymous function 
+let hello = function () {
+    console.log('hello')
+}
+hello()
+//es 6 version of anonymous function-arrow 
+let hai =  () => {
+    console.log('hai')
+}
+hai()
+
+Reacforing arrow function: How to simplify the code.
+....................................................
+//if arrow having only one line of body, we can remove {}
+let hai = () => console.log('hai')
+
+hai()
+
+Arrow and parameters:
+.....................
+
+let add = (a = 0, b = 0) => {
+    let c = a + b
+    console.log(c)
+}
+add(10,10)
+
+Arrow and return:
+
+let add = (a = 0, b = 0) => {
+    return a + b
+}
+console.log(add(10, 10))
+
+//if function has return statement only: we can remove return keyword and {}
+
+add = (a = 0, b = 0) => a + b
+console.log(add(10, 10))
+
+//if function takes single args,without default value and returns the same,we can remove {},return statement, ()
+
+let getStock = stock => stock 
+
+console.log(getStock(10))
+.....................................................................................
+			 Higher order functions
+.....................................................................................
+Since function is value can be passed to another function as parameter(value) and also return another function from function.
+
+Higher order function: function  as parameter:
+................................................
+
+ES 5 function:
+function add(a, b) {
+  console.log(a,b)
+}
+add(10, 10)
+let x = 10;
+let y = 20
+add(x, y)
+
+
+function connect(a) {
+    a()
+}
+
+let sqlconnect = function() {
+    console.log('sqlconnect')
+}
+connect(sqlconnect)
+
+connect(function () {
+    console.log('sqlconnect')
+})
+
+parameeters and hof:
+...................
+
+function connect(cb) {
+    cb('sql')
+}
+let sqlconnect = function (status) {
+    console.log(status)
+}
+connect(sqlconnect)
+
+connect(function (status) {
+    console.log(status)
+})
+//
+Arrow and HOF:
+
+
+// function connect(cb) {
+//     cb('sql')
+// }
+let connect = cb => cb('sql')
+// let sqlconnect = function(status){
+//     console.log(status)
+// }
+let sqlconnect = (status) => console.log(status)
+connect(sqlconnect)
+
+connect(function (status) {
+    console.log(status)
+})
+connect(status => console.log(status))
+
+.....................................................................................
+				  Objects
+.....................................................................................
+			
+Objects can be created in two ways
+
+1.constructors pattern
+   es 5 functions 
+   es 6 classes
+2.literal pattern
+
+class Employee {
+    //instance variables
+    id = 10
+    name = 'Subramanian'
+
+    //instance methods
+    calculateSalary(noofdays) {
+        return noofdays * 100
+    }
+}
+//how to create object 
+//let -keyword
+//emp -variable
+//new is keyword 
+//Employee() - constructor call 
+let emp = new Employee()
+
+console.log(emp.id,emp.name,emp.calculateSalary(5))
+
+Constructor Parameters:
+......................
+class Employee {
+    //instance variables
+    id
+    name
+    //constructors
+    constructor(id = 0, name = 'defaultName') {
+        this.id = id
+        this.name = name
+    }
+    //instance methods
+    calculateSalary(noofdays) {
+        return noofdays * 100
+    }
+}
+let emp = new Employee(1, 'Subramanian')
+
+console.log(emp.id, emp.name, emp.calculateSalary(5))
+
+..
+Inheirtance..
+
+
+
+
+
+
+
+
+
+
