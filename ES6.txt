@@ -531,6 +531,643 @@ console.log(emp.id, emp.name, emp.calculateSalary(5))
 ..
 Inheirtance..
 
+class Account {
+    constructor() {
+        console.log('account')
+
+    }
+    deposit() {
+        return 100
+    }
+}
+class SavingsAccount extends Account {
+    constructor() {
+        super()
+        console.log('savings account')
+    }
+    //override
+    deposit() {
+        return 1000 + super.deposit()
+    }
+}
+let sb = new SavingsAccount()
+console.log(sb.deposit())
+
+
+literal objects:
+................
+
+//literal objects 
+
+let employee = {
+    id: 1,
+    name: 'Subramanian',
+    address: {
+        city: 'Coimbatore'
+    }
+}
+console.log(employee.id, employee.name, employee.address.city)
+....................................................................................
+Arrays:
+.......
+arrays are objects,
+which is declared using [] notation.
+Since array is object which has lot of methods.
+value of the array can be string,numbers,booleans,objects,nested array.
+//arrays:
+
+let employees = [
+    {
+        id: 1,
+        name: 'A',
+        address: {
+            city: 'a1'
+        }
+    },
+    {
+        id: 2,
+        name: 'B',
+        address: {
+            city: 'b1'
+        }
+    }
+]
+//
+employees.forEach(emp => {
+    console.log(emp.id, emp.name, emp.address.city)
+})
+Object destructuring:
+.....................
+
+How to destructure object properties when it is passed as arg.
+
+//Object destructuring:
+
+// function printEmployeeDetails(employee) {
+//     console.log(`Id ${employee.id}`)
+//     console.log(`Name ${employee.name}`)
+//     console.log(`City ${employee.address.city}`)
+// }
+// function printEmployeeDetails(employee) {
+//     //destructure properties
+//     const { id, name, address } = employee
+//     console.log(`Id ${id}`)
+//     console.log(`Name ${name}`)
+//     console.log(`City ${address.city}`)
+// }
+// function printEmployeeDetails({ id, name, address }) {
+//     console.log(`Id ${id}`)
+//     console.log(`Name ${name}`)
+//     console.log(`City ${address.city}`)
+// }
+// function printEmployeeDetails({ id, name, address: { city } }) {
+//     console.log(`Id ${id}`)
+//     console.log(`Name ${name}`)
+//     console.log(`City ${city}`)
+// }
+const printEmployeeDetails = ({ id, name, address: { city } }) => {
+    console.log(`Id ${id}`)
+    console.log(`Name ${name}`)
+    console.log(`City ${city}`)
+}
+printEmployeeDetails({
+    id: 1,
+    name: 'Subramanian',
+    address: {
+        city: 'Coimbatore'
+    }
+})
+
+How to destructure object properties when you return object?
+// function getStock() {
+//     return {
+//         id: 1,
+//         symbol: 'GOOGLE',
+//         price: 10000,
+//         qty: 111
+//     }
+// }
+// console.log(getStock())
+
+// function getStock(id = 1, symbol = 'google', price = 10000, qty = 111) {
+//     return {
+//         id: id,
+//         symbol: symbol,
+//         price: price,
+//         qty: qty
+//     }
+// }
+// console.log(getStock())
+
+
+// function getStock(id = 1, symbol = 'google', price = 10000, qty = 111) {
+//     //left:right is same we can remove any one
+//     return {
+//         id,
+//         symbol,
+//         price,
+//         qty,
+//     }
+// }
+// console.log(getStock(2, 'yahoo', 32, 1000))
+
+// const getStock=(id = 1, symbol = 'google', price = 10000, qty = 111) => {
+//     return {
+//         id,
+//         symbol,
+//         price,
+//         qty,
+//     }
+// }
+// console.log(getStock(2, 'yahoo', 32, 1000))
+
+const getStock = (id = 1, symbol = 'google', price = 10000, qty = 111) => ({
+    id,
+    symbol,
+    price,
+    qty,
+})
+console.log(getStock(2, 'yahoo', 32, 1000))
+.....................................................................................
+				Async Programming
+.....................................................................................
+
+Async programming which does not block current thread,work is done in kernal parts.
+Results are returned from the kernal using event driven arch.
+
+How to implement async programming?
+
+Req:
+1.High level non blocking apis provided by js language.
+        -timers,ajax,web socket....
+2.Listener function to handle async results which is called as callbacks.
+3.Callbacks are implemented using Higher order Function(function as parameter)
+
+
+Styles of writing async programming:
+
+1.callbacks pattern
+2.Promise Pattern
+3.Promise with async and await
+4.Reactive Programming via rxjs...
+
+
+
+callback Pattern:
+
+Simple callback:
+//async programming using callbacks.
+
+// function sayHello(callback) {
+//     setTimeout(callback, 1000)
+// }
+// console.log('start')
+// sayHello(function () {
+//     console.log('hello')
+// })
+// console.log('end')
+
+const sayHello = callback => setTimeout(callback, 1000, 'Hello')
+console.log('start')
+sayHello(message => console.log(message))
+console.log('end')
+
+Composition: callback chaining
+..............................
+
+The output one callback will input for another callback.
+
+//callback chaining
+//resolve = success,
+//reject = failure
+const getUser = (resolve, reject) => {
+    console.info('getUser is called')
+    let user = {
+        name: 'admin',
+        password: 'admin'
+    }
+    user = undefined
+    if (user) {
+        setTimeout(resolve, 1000, user)
+    } else {
+        setTimeout(reject, 1000, { message: 'User not found' })
+    }
+}
+
+//login 
+const login = (user, resolve, reject) => {
+    console.info('login is called')
+
+    if (user.name === 'admin' && user.password === 'admin') {
+        setTimeout(resolve, 1000, 'login success')
+    } else {
+        setTimeout(reject, 1000, 'login failed')
+    }
+}
+
+
+getUser(user => {
+    login(user, status => {
+        console.log(status)
+    }, err => {
+        console.log(err)
+    })
+}, err => {
+    console.log(err)
+})
+
+Callback Hell:
+..............
+getUser(user => {
+    login(user, status => {
+        console.log(status)
+    }, err => {
+        console.log(err)
+    })
+}, err => {
+    console.log(err)
+})
+
+
+fs.readdir(source, function (err, files) {
+  if (err) {
+    console.log('Error finding files: ' + err)
+  } else {
+    files.forEach(function (filename, fileIndex) {
+      console.log(filename)
+      gm(source + filename).size(function (err, values) {
+        if (err) {
+          console.log('Error identifying file size: ' + err)
+        } else {
+          console.log(filename + ' : ' + values)
+          aspect = (values.width / values.height)
+          widths.forEach(function (width, widthIndex) {
+            height = Math.round(width / aspect)
+            console.log('resizing ' + filename + 'to ' + height + 'x' + height)
+            this.resize(width, height).write(dest + 'w' + width + '_' + filename, function(err) {
+              if (err) console.log('Error writing file: ' + err)
+            })
+          }.bind(this))
+        }
+      })
+    })
+  }
+
+In the above code:
+
+Are you able to understand code?
+Are you able to debug code easily?
+Are you able to scale code?
+
+No!
+ This is called called "Callback Hell".
+
+How to avoid callback hell or how to write clean async code? how to write simple async programming without callback hell?
+
+Promises:
+.........
+Promise is design pattern which hides complexity of callback patterns
+
+Since Promise is design pattern, many people have implemented Promise design pattern.
+
+1.JQuery -first promise implementation
+2.many libs and frameworks
+
+
+In order standarize , ECMA committe decided to include Promise Design pattern at language level .(ES 6)
+2012 E6 Committe introduced promise design pattern  as  "Promise" Object  in javascript.
+
+.....................................................................................
+			  Promise Implementation
+.....................................................................................
+
+Features of Promise Object:
+1.Promise by deafult is Async. Which implements timer api with 0 ms .
+2.Promise can be used with any async callback based  implementations.
+
+
+Objective:
+
+ To remove callbacks in async/non blocking code. write cleaner async programming.
+ To remove complex callback chaining code.
+
+
+Difference between callbacks and promises:
+
+Essentially, a promise is a returned object to which you attach callbacks, instead of passing callbacks into a function.
+
+....................................................................................
+
+		Promise Implemenation: Object Object creations
+...................................................................................
+
+1. Create Promise Object from Promise contructor
+      new Promise()
+2. Create Promise object from factory apis 
+      Promise.resolve() / Promise.reject()
+
+Promise object methods:
+
+1.then - success
+2.catch - errors
+3.finally - clean up
+
+factory api to create Promise object
+4.resolve
+5.reject
+.......................................
+6.all
+7.race
+
+1.Promise factory api
+   -success - resolve
+   -failure - reject
+
+Eg:
+Promise with Success:
+//Promise object creation using Promise Factory apis .
+
+//simple promise 
+
+function getUser() {
+    return Promise.resolve('Subramanian')
+}
+
+console.log('start')
+getUser().then(res => console.log(res))
+console.log('end')
+
+
+Promise with Error:
+//Promise object creation using Promise Factory apis .
+
+//simple promise 
+
+function getError() {
+    return Promise.reject('oops!')
+}
+
+console.log('start')
+getError().catch(err => console.log(err))
+console.log('end')
+
+
+Promise with Success and Error : biz.
+//Promise object creation using Promise Factory apis .
+
+function login(userName, password) {
+    if (userName === 'admin' && password === 'admin') {
+        return Promise.resolve('Success')
+    } else {
+        return Promise.reject('Opps!Failed')
+    }
+}
+
+console.log('start')
+login('admin', 'admin')
+    .then(status => console.log(status))
+    .catch(err => console.log(err))
+console.log('end')
+
+
+The above promise returns only result with predefined delay, what if i want explicit dealy like 1000.
+
+Constructor pattern.
+
+//Promise object creation using Promise Factory apis .
+
+function login(userName, password) {
+    if (userName === 'admin' && password === 'admin') {
+        return new Promise((resolve, reject) => {
+            setTimeout(resolve, 1000, 'Success')
+        })
+    } else {
+        return new Promise((resolve, reject) => {
+            setTimeout(reject, 1000, 'oops,failed')
+        })
+    }
+}
+
+console.log('start')
+login('admin', 'admin')
+    .then(status => console.log(status))
+    .catch(err => console.log(err))
+console.log('end')
+............................................................
+
+Callback Hell and Promises:
+const getUser = () => {
+    console.info('getUser is called')
+    return new Promise((resolve, reject) => {
+        let user = {
+            name: 'admin',
+            password: 'admin'
+        }
+        // user = undefined
+        if (user) {
+            setTimeout(resolve, 1000, user)
+        } else {
+            setTimeout(reject, 1000, { message: 'User not found' })
+        }
+    })
+}
+
+//login 
+const login = user => {
+    console.info('login is called')
+    return new Promise((resolve, reject) => {
+        if (user.name === 'admin' && user.password === 'admin') {
+            setTimeout(resolve, 1000, 'login success')
+        } else {
+            setTimeout(reject, 1000, 'login failed')
+        }
+    })
+}
+
+
+// getUser(user => {
+//     login(user, status => {
+//         console.log(status)
+//     }, err => {
+//         console.log(err)
+//     })
+// }, err => {
+//     console.log(err)
+// })
+
+// getUser()
+//     .then(user => {
+//         return login(user)
+//     })
+//     .then(status => {
+//         console.log(status)
+//     })
+//     .catch(err => {
+//         console.log(err)
+//     })
+
+getUser()
+    .then(user => login(user))
+    .then(status => console.log(status))
+    .catch(err => console.log(err))
+...................................................................................
+			Promise Chaining -Promise Hell
+..................................................................................
+
+getUser()
+    .then(user => login(user))
+    .then(status => console.log(status))
+    .catch(err => console.log(err))
+
+Here the code is having so many "then ables", in realtime if we have many more thens which makes code even harder.
+
+ES 7 introduced new feature called "async and await"  which are keywords , when we resolve promises we dont need to use thens and catch.
+
+We can write more declarative,sync style of async code.
+const getUser = () => {
+    console.info('getUser is called')
+    return new Promise((resolve, reject) => {
+        let user = {
+            name: 'admin',
+            password: 'admin'
+        }
+        // user = undefined
+        if (user) {
+            setTimeout(resolve, 1000, user)
+        } else {
+            setTimeout(reject, 1000, { message: 'User not found' })
+        }
+    })
+}
+
+//login 
+const login = user => {
+    console.info('login is called')
+    return new Promise((resolve, reject) => {
+        if (user.name === 'admin' && user.password === 'admin') {
+            setTimeout(resolve, 1000, 'login success')
+        } else {
+            setTimeout(reject, 1000, 'login failed')
+        }
+    })
+}
+// getUser()
+//     .then(user => login(user))
+//     .then(status => console.log(status))
+//     .catch(err => console.log(err))
+
+
+async function main() {
+    try {
+        const user = await getUser()
+        const status = await login(user)
+        console.log(status)	
+    }
+    catch (err) {
+        console.log(err)
+    }
+}
+main()
+....................................................................................
+				Module Pattern-ES 6 Modules
+.....................................................................................
+
+How to write code across files and folders?
+
+src/util/myutil.js
+src/services/Todo.service.js
+
+Module pattern provides keywords:
+
+1.export,export default -  to share code
+2.import - link files
+
+src/util/myutil.js
+// export const companyName='IBM'
+// export const address = {
+//     city:'Delhi'
+// }
+
+const companyName = 'IBM'
+const address = {
+    city: 'Delhi'
+}
+
+export { companyName, address }
+
+src/index.js
+import { companyName ,address } from "./util/myutil.js";
+
+console.log(companyName,address.city)
+
+index.html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ES 6 apps</title>
+</head>
+<body>
+    <h1>ES 6 Apps</h1>
+    <script src="src/index.js" type="module"></script>
+    
+</body>
+</html>
+.....................................................................................
+
+src/services/Todoservice.service.js
+
+
+export default class TodoService {
+    
+    list(){
+        return [{id:1,status:'completed',task:'learn'}]
+    }
+}
+// export default class Abc {
+
+// }
+
+src/index.js
+    import { companyName ,address } from "./util/myutil.js";
+    import TodoService from "./services/todo.service.js";
+
+    console.log(companyName,address.city)
+
+    let todo = new TodoService()
+    console.log(todo.list())
+
+.........................*************************...................................
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
