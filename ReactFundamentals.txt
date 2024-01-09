@@ -1,0 +1,191 @@
+				 React fundamentals
+.....................................................................................
+
+What is React?
+
+  React is javascript lib for building user interface 
+  React is  java script lib like jquery,framework like angular.
+
+What is User interface application?
+ 
+  The user where he interacts , those applications are called user interface applications.
+
+Eg:
+  Desktop applications
+     if you want to interact with os, shell is primary user interface
+     shell in windows, command,powershell,explorer 
+
+  Web Browser:
+     It is one of the application software, acts as user interface for web applications
+ 
+ Hand Held devices
+  =>Mobile applications
+  =>Watch
+  =>Tabs
+  =>TV
+ etc..
+
+.....................................................................................
+				Types of web app
+.....................................................................................
+
+1.Static Web apps -  1989 to 1995
+    built at server end,accessed by clients using browser
+    HTML Pages are primary output.
+
+2.Dynamic content web apps - 1996 to till date
+    built at server end, access by clients using browser
+eg:
+  JEE(Servlets,jsp)
+  Asp.net
+  PHP
+ etc.....
+
+3.Web Services -1998 to till
+    Data driven apps
+     built at server end, accessed by clients  such  as mobiles, client side browser apps.
+ SOAP - XML based web service
+ RESTFull -  Different format based web service - JSON,XML,PDF....
+
+....................................................................................
+			  Client Side Web apps
+
+1.SPA
+Single Page Web Apps -  2007 to till date
+   built at client side,accessed by clients browsers.
+   built using javascript,html 5,css 3 
+
+.....................................................................................
+			 React and Web Stack
+....................................................................................
+
+React was created to build SPA Web apps by face book at 2013.
+"React is modern SPA lib created by face book based on "Flux Design Pattern"
+.....................................................................................
+
+Architecture for libs and frameworks:
+
+Plain JS
+			 Application(dom) -plain js
+			     |
+			 Javascript Engine
+			      |
+			  Browser Engine
+
+
+
+
+Framework/lib
+			 Application(JQuery)
+			     |
+		       ---------------------------
+			  JQuery Engine	------javascript programming		
+                       -------------------------------
+			      |
+			 Javascript Engine -C/C++
+			      |
+			  Browser 
+
+What is jquery engine?
+  Jquery engine is also javascript program.
+
+
+React
+
+
+		       Application(React)
+			     |
+		       ---------------------------
+	              React Engine :React fiber-->React 16 on wards		
+                      ---------------------------------
+			      |
+			 Javascript Engine
+			      |
+			  Browser Engine
+
+
+React Engine itself is javascript
+
+.....................................................................................
+			  React Echo system
+....................................................................................
+
+Where is react used? What type of apps u can build using react.
+
+React is every where from building browser based apps , mobile apps,server side web apps.
+What ever type of app you build "React core" remains same.
+
+React can be used to build application for 
+........................................
+1.browsers : Desktop -  Reactjs - SPA
+2.Mobile Apps : React Native
+3.Server side Apps: "Next.js"
+
+face book is working on many futures projects related to react
+4.React VR : Virtual Reality.
+5.React Car : For car applications
+6.React TV  : React for TV.
+7.React IOT : any devices
+...................................................................................
+			   React core 
+..................................................................................
+React apps are written using a language called "JSX"
+
+JSX language features are same but its "mark up" syntax would be different.
+
+For Browser JSX markup would be "HTML"
+For Mobile JSX markup would be "Mobile Elements"
+.....................................................................................
+React and Browser:
+..................
+
+Project setup:
+..............
+npx create-react-app my-app
+
+Folder Structure
+
+my-app
+ |
+ node_modules
+ package.json
+ package-lock.json
+ public 
+ src
+ readme.md
+
+
+node_modules
+  It is folder contains all libs files and folders downloaded from internet.
+  React lib has been downloaded and kept inside this folder only.
+
+package.json
+   Every javascript project(it can be any js project), has package.json file  
+   This file contains information about the project
+
+Basic information:
+ ->Name of the application "name" :"myapp"
+ ->version of the application "version": "1.0.0"
+ ->dependencies
+     libs  required for dev ,testing, production
+    you can understand what version of lib is used in the current project
+ ->scripts
+     scripts contains information about how to start dev server,testing,production build.
+
+public 
+  index.html
+  This is entry file in react application.
+  without this file we cant start the application
+
+src
+ |
+ index.js
+  App.js
+ This folder contains application code files.
+
+readme.md
+   this is documentation file
+
+how to run the project?
+ npm start
+....................................................................................
