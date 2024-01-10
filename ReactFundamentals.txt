@@ -189,4 +189,207 @@ readme.md
 how to run the project?
  npm start
 ....................................................................................
+				DOM
+
+java script was created to do DOM programming.
+
+What is DOM?
+  IT is spec, for building dynamic html.
+
+According to DOM Spec, every html element is object. called dom object.
+
+<h1> ---inside javascript h1 is object.
+
+We build user interface based on objects, which forms tree called "object tree"- DOM Tree.
+
+HTML Tree
+ <div>
+    <div>
+	<div>
+	    <span>This is dom</span>
+	</div>
+   </div>
+ </div>
+
+Object tree or dom tree
+   
+   div -node-object
+    |
+    div
+     |
+     div
+      |
+      span
+
+In all ui frameworks, like react,angular,vue js the same tree is represented called "Component tree".
+
+What is Component?
+   Object which represents an ui element or elements.
+
+In React and React native we create components.
+.....................................................................................
+
+Component Creations:
+ In React , we use "JSX" language to create compoents.
+
+JSX is more declartive programming.
+
+React = {markup + js}
+
+markup =html for browsers , mobile markup for mobile,tv...
+
+Component = JSX = {markup + js}
+
+How to write first component?
+//write first component.
+import ReactDOM from "react-dom/client"
+
+//component declaration
+const Welcome = <h1>Hello!</h1>
+
+//insert Welcome to into root element
+const rootElement = ReactDOM.createRoot(document.getElementById('root'))
+rootElement.render(Welcome)
+
+How to create Components in react?
+
+We have three patterns.
+
+1.Variable Pattern
+2.function pattern
+3.ES 6 class Pattern
+
+
+1.Variable Pattern
+
+//write first component.
+import ReactDOM from "react-dom/client"
+
+//variable Pattern
+const Welcome = <h1>Hello!</h1>
+
+//insert Welcome to into root element
+const rootElement = ReactDOM.createRoot(document.getElementById('root'))
+rootElement.render(Welcome)
+
+
+2.functions pattern
+import ReactDOM from "react-dom/client"
+
+
+//es 5 function 
+// function Welcome() {
+//     //must return jsx code 
+//     return <h1>Hello!!</h1>
+// }
+//es 6 arrow function 
+// const Welcome = () => {
+//     return <h1>Welcome</h1>
+// }
+const Welcome = () => <h1>Welcome</h1>
+
+
+const rootElement = ReactDOM.createRoot(document.getElementById('root'))
+
+//imperative way:
+// rootElement.render(Welcome())
+//declarative syntax:
+// rootElement.render(<Welcome></Welcome>)
+rootElement.render(<Welcome />)
+
+classes:
+ Note: classes are not recommended,only functional components are recommended.
+we will dicuss why functional components are good.
+
+import ReactDOM from "react-dom/client"
+import React from "react"
+
+class Welcome extends React.Component {
+    //override method called "render" where we can write jsx code 
+    render() {
+        return <h1>Welcome!!</h1>
+    }
+}
+
+const rootElement = ReactDOM.createRoot(document.getElementById('root'))
+
+rootElement.render(<Welcome />)
+.....................................................................................
+...................................................................................
+			  JSX
+
+
+JSX - Javascript and XML
+
+What is JSX?
+ JSX is dsl language to create user interfaces
+
+What is relationship with XML?
+
+ Inside JSX , we write javascript code and HTML code only not xml code.
+
+Why the term XML is used?
+
+ When we write JSX code, we need stable mark up standards.
+
+You know very well HTML has weak parser  that means 
+ <h1>hello
+when run the code , the html parser does not stop rendering hello, it never throws any error.
+
+in order to avoid instability code inside jsx during compilation, JSX team adopted XML Parser rules, since XML parser has strong parser
+
+Basic XML  rules:
+
+1.every opened element must be closed
+  <h1>Hello</h1>
+  <Welcome></Welcome>
+ some elements may not have closing tag
+  <img /> : image element has no child elements : self closing. 
+
+
+import ReactDOM from "react-dom/client"
+import React from "react"
+
+const Welcome = () => {
+    return <h1>Hello
+}
+
+const rootElement = ReactDOM.createRoot(document.getElementById('root'))
+
+rootElement.render(<Welcome />)
+
+2. In xml you must have one single root element.
+  all elements must be organized under single root element.
+
+ <h1>Welcome to React</h1>
+ <p>Path finder</p>
+ <h1>Welcome to React</h1>
+ <p>Path finder</p>
+
+In html what can be root element
+ <div>,<span>,all html 5 layout elements header,footer,section,aside...
+
+import ReactDOM from "react-dom/client"
+import React from "react"
+
+// const Welcome = () => {
+//     return <h1>Hello</h1>
+//             <span>test</span>
+// }
+
+const Welcome = () => {
+    return <div>
+        <h1>Hello</h1>
+        <span>test</span>
+    </div>
+}
+
+const rootElement = ReactDOM.createRoot(document.getElementById('root'))
+
+rootElement.render(<Welcome />)
+
+
+
+
+
 
