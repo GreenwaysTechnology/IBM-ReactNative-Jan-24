@@ -1,0 +1,13 @@
+{
+    "compilerOptions": {
+        "outDir": "build",
+        "lib": ["ES2015","dom"]
+        
+    },
+    "exclude": [
+        "node_modules"
+    ],
+    "files": [
+        "src/index.ts"
+    ]
+}
