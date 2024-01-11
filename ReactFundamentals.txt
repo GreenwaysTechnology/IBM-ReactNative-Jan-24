@@ -682,3 +682,489 @@ Build Layouts based on compoenent composition
      ->Have three blogs
    Footer
      ->Copyright
+....................................................................................
+			  Dynamic Page -  data binding
+.....................................................................................
+Types of app
+1.static app
+  only markup-html , hand coded.
+2.dynamic app
+   markup +data
+
+How to add data in the component or How to bind data in the compoent?
+
+Data can be represented many ways
+
+1.primitives - numbers,strings,booleans
+2.objects - literals
+3.collections - arrays 
+
+let | const variableName ='value'
+
+{variableName}-data binding
+
+data binding can be 
+{variable}
+{expression} - {10*10} - {getValue()} {emp.id}
+
+
+eg:
+import ReactDOM from "react-dom/client"
+
+//dynamic ui = {markup + data}
+
+const Welcome = () => {
+    let name = 'Subramanian Murugan'
+    let age = 18
+    let status = true
+    let address = {
+        city: 'Coimbatore'
+    }
+    let skills = ["javascript", "java", "react", "react native", "microservices"]
+    return <>
+        <h1>Your name is {name}</h1>
+        <h1>Your age is {age}</h1>
+        <h1>Your Status is {status ? "Available" : "Not Available"}</h1>
+        <h1>Your City is {address.city}</h1>
+        <h2>Your skills</h2>
+        <ol>
+            {
+                skills.map(skill => {
+                    return <li>{skill}</li>
+                })
+            }
+        </ol>
+    </>
+}
+
+
+const App = () => {
+    return <Welcome />
+}
+const rootElement = ReactDOM.createRoot(document.getElementById('root'))
+rootElement.render(<App />)
+
+
+In the above example we have declared variables and bound with markup, which is not right way to delcare data and bind.
+.....................................................................................
+			 Data binding patterns
+.....................................................................................
+
+
+Data can be bound to component in two ways
+
+1.data is supplied from the outside the compoent
+2.data is encapsulated with in the component
+
+
+1.data is supplied from the outside the component
+  When component receives data from  the outside, this pattern is called as "Property Pattern or Props Pattern".
+
+Outside component means what? what is outside for the component?
+
+You know very well, react creates components and assembles them in tree model, the one component is called parent compoent and other component is child component , some other compoents are called as sibilings.
+
+outside means parent.
+
+Data is supplied from the parent compoent to child component - props pattern
+
+Basic Property Syntax:
+import ReactDOM from "react-dom/client"
+
+// const Profile = (id, name) => {
+
+//     return <div>
+//         <h1>Profile Details</h1>
+//         <h2>Id : {id}</h2>
+//         <h2>Name :{name}</h2>
+//     </div>
+// }
+
+//abc =  object  - > {id:1,name:'Subramanian'}
+//abc is property or props
+// const Profile = (abc) => {
+//     return <div>
+//         <h1>Profile Details</h1>
+//         <h2>Id : {abc.id}</h2>
+//         <h2>Name :{abc.name}</h2>
+//     </div>
+// }
+const Profile = (props) => {
+    console.log(props)
+    return <div>
+        <h1>Profile Details</h1>
+        <h2>Id : {props.id}</h2>
+        <h2>Name :{props.name}</h2>
+        <h2>Status : {props.status ? "Available" : "Not Available"}</h2>
+        <h2>Age : {props.age}</h2>
+        <address>
+            <p>city: {props.address.city}</p>
+        </address>
+        <ol>
+            {
+                props.skills.map(skill => {
+                    return <li>{skill}</li>
+                })
+            }
+        </ol>
+    </div>
+}
+const App = () => {
+    // return Profile(1, 'Subramanian Murugan')
+    let age = 18
+    let status = true
+    let address = {
+        city: 'Coimbatore'
+    }
+    let skills = ["javascript", "java", "react", "react native", "microservices"]
+
+    return <Profile id={1} name="Subramaian Murugan" age={age} status={status} address={address} skills={skills} />
+}
+const rootElement = ReactDOM.createRoot(document.getElementById('root'))
+rootElement.render(<App />)
+...................................................................................
+			Why Props
+...................................................................................
+Props helps components/widgets for configuration.
+
+
+I am going to create Configurable Profile Component, so that i can supply different types of profile data.
+
+import ReactDOM from "react-dom/client"
+
+const Profile = (props) => {
+    return <div>
+        <h1>Profile Details</h1>
+        <h2>Id : {props.id}</h2>
+        <h2>Name :{props.name}</h2>
+        <h2>Status : {props.status ? "Available" : "Not Available"}</h2>
+        <h2>Age : {props.age}</h2>
+        <address>
+            <p>city: {props.address.city}</p>
+        </address>
+        <ol>
+            {
+                props.skills.map(skill => {
+                    return <li>{skill}</li>
+                })
+            }
+        </ol>
+    </div>
+}
+const App = () => {
+    return <>
+        <Profile id={1} name="Subramaian Murugan" age={18} status={true} address={{ city: 'Coimbatore' }} skills={["react", "java"]} />
+        <Profile id={2} name="Murugan" age={34} status={false} address={{ city: 'Delhi' }} skills={["microservices", "node js"]} />
+        <Profile id={3} name="Ram" age={34} status={true} address={{ city: 'Pune' }} skills={["microservices", "node js"]} />
+    </>
+}
+const rootElement = ReactDOM.createRoot(document.getElementById('root'))
+rootElement.render(<App />)
+
+
+List of Profiles:
+import ReactDOM from "react-dom/client"
+import { PROFILES } from "./mock-data/profile"
+
+const Profile = (props) => {
+    return <div>
+        <h1>Profile Details</h1>
+        <h2>Id : {props.id}</h2>
+        <h2>Name :{props.name}</h2>
+        <h2>Status : {props.status ? "Available" : "Not Available"}</h2>
+        <h2>Age : {props.age}</h2>
+        <address>
+            <p>city: {props.address.city}</p>
+        </address>
+        <ol>
+            {
+                props.skills.map(skill => {
+                    return <li>{skill}</li>
+                })
+            }
+        </ol>
+    </div>
+}
+const App = () => {
+    return <>
+        {
+            PROFILES.map(profile => {
+                return <Profile id={profile.id} name={profile.name} status={profile.status} address={profile.address} skills={profile.skills} />
+            })
+        }
+    </>
+}
+const rootElement = ReactDOM.createRoot(document.getElementById('root'))
+rootElement.render(<App />)
+
+export const PROFILES = [
+    {
+        id: 1,
+        name: 'Subramanian',
+        status: true,
+        address: {
+            city: 'Coimbatore'
+        },
+        skills: ["react", "java"]
+    },
+    {
+        id: 2,
+        name: 'Murugan',
+        status: false,
+        address: {
+            city: 'Delhi'
+        },
+        skills: ["Python", "Flask"]
+    },
+    {
+        id: 3,
+        name: 'Ram',
+        status: true,
+        address: {
+            city: 'Banaglore'
+        },
+        skills: ["Microservices", "Java", "React", "Node"]
+    }
+]
+.....................................................................................
+			Breaking component and passing data
+.....................................................................................
+
+import ReactDOM from "react-dom/client"
+import { PROFILES } from "./mock-data/profile"
+
+const Address = props => {
+    return <address>
+        <p>city: {props.address.city}</p>
+    </address>
+}
+const SkillsList = props => {
+    return <ol>
+        {
+            props.skills.map(skill => {
+                return <SkillsListItems skill={skill} />
+            })
+        }
+    </ol>
+}
+const SkillsListItems = props => {
+    return <li>{props.skill}</li>
+}
+const Profile = props => {
+    return <div>
+        <h1>Profile Details</h1>
+        <h2>Id : {props.id}</h2>
+        <h2>Name :{props.name}</h2>
+        <h2>Status : {props.status ? "Available" : "Not Available"}</h2>
+        <h2>Age : {props.age}</h2>
+        <Address address={props.address} />
+        <SkillsList skills={props.skills} />
+    </div>
+}
+const App = () => {
+    return <>
+        {
+            PROFILES.map(profile => {
+                return <Profile id={profile.id} age={profile.age} name={profile.name} status={profile.status} address={profile.address} skills={profile.skills} />
+            })
+        }
+    </>
+}
+const rootElement = ReactDOM.createRoot(document.getElementById('root'))
+rootElement.render(<App />)
+
+.....................................................................................
+			Property Spread Operator
+
+import ReactDOM from "react-dom/client"
+import { PROFILES } from "./mock-data/profile"
+
+const Address = props => {
+    return <address>
+        <p>city: {props.address.city}</p>
+    </address>
+}
+const SkillsList = props => {
+    return <ol>
+        {
+            props.skills.map(skill => {
+                return <SkillsListItems skill={skill} />
+            })
+        }
+    </ol>
+}
+const SkillsListItems = props => {
+    return <li>{props.skill}</li>
+}
+const ProfileMaster = props => {
+    //what if i want to pass all properties from this component to another component.
+    // return <ProfileDetails id={props.id} name={props.name} status={props.status} age={props.age} address={props.address} skills={props.skills} />
+    //in order to send all data we can use short cut: spread operator.
+    return <ProfileDetails {...props} title="Profile Details" />
+}
+
+const ProfileDetails = props => {
+    return <div>
+        <h1>{props.title}</h1>
+        <h2>Id : {props.id}</h2>
+        <h2>Name :{props.name}</h2>
+        <h2>Status : {props.status ? "Available" : "Not Available"}</h2>
+        <h2>Age : {props.age}</h2>
+        <Address address={props.address} />
+        <SkillsList skills={props.skills} />
+    </div>
+}
+const App = () => {
+    return <>
+        {
+            PROFILES.map(profile => {
+                return <ProfileMaster id={profile.id} age={profile.age} name={profile.name} status={profile.status} address={profile.address} skills={profile.skills} />
+            })
+        }
+    </>
+}
+const rootElement = ReactDOM.createRoot(document.getElementById('root'))
+rootElement.render(<App />)
+.....................................................................................
+			Object Destructuring And Props
+.....................................................................................
+import ReactDOM from "react-dom/client"
+import { PROFILES } from "./mock-data/profile"
+
+const Address = ({ address: { city } }) => <address>
+    <p>city: {city}</p>
+</address>
+
+const SkillsList = ({ skills }) => <ol>{
+    skills.map(skill => <SkillsListItems skill={skill} />)
+}</ol>
+
+const SkillsListItems = ({ skill }) => <li>{skill}</li>
+
+const ProfileMaster = props => <ProfileDetails {...props} title="Profile Details" />
+
+const ProfileDetails = props => {
+    const { id, name, status, age, address, skills, title } = props
+    return <div>
+        <h1>{title}</h1>
+        <h2>Id : {id}</h2>
+        <h2>Name :{name}</h2>
+        <h2>Status : {status ? "Available" : "Not Available"}</h2>
+        <h2>Age : {age}</h2>
+        <Address address={address} />
+        <SkillsList skills={skills} />
+    </div>
+}
+const App = () => <>
+    {
+        PROFILES.map(profile => {
+            return <ProfileMaster id={profile.id} age={profile.age} name={profile.name} status={profile.status} address={profile.address} skills={profile.skills} />
+        })
+    }
+</>
+
+const rootElement = ReactDOM.createRoot(document.getElementById('root'))
+rootElement.render(<App />)
+.....................................................................................
+			Default Props
+.....................................................................................
+import ReactDOM from "react-dom/client"
+
+const Profile = (props) => {
+    return <div>
+        <h1>Profile Details</h1>
+        <h2>Id : {props.id}</h2>
+        <h2>Name :{props.name}</h2>
+        <h2>Status : {props.status ? "Available" : "Not Available"}</h2>
+        <h2>Age : {props.age}</h2>
+        <address>
+            <p>city: {props.address.city}</p>
+        </address>
+        <ol>
+            {
+                props.skills.map(skill => {
+                    return <li>{skill}</li>
+                })
+            }
+        </ol>
+    </div>
+}
+
+//Default Props are props which are supplied when a property is not supplied.
+Profile.defaultProps = {
+    id: 0,
+    name: 'Name',
+    age: 18,
+    status: false,
+    address: {
+        city: 'New York'
+    },
+    skills: ['skill1', 'skill2']
+}
+
+
+
+const App = () => {
+    return <>
+        <Profile id={1} name="Subramaian Murugan" age={18} status={true} address={{ city: 'Coimbatore' }} skills={["react", "java"]} />
+        <Profile id={2} name="Murugan" age={34} address={{ city: 'Delhi' }} skills={["microservices", "node js"]} />
+        <Profile />
+    </>
+}
+const rootElement = ReactDOM.createRoot(document.getElementById('root'))
+rootElement.render(<App />)
+.....................................................................................
+			class components and props.
+.....................................................................................
+
+import React from "react"
+import ReactDOM from "react-dom/client"
+
+class Profile extends React.Component {
+
+    render() {
+        return <div>
+            <h1>Profile Details</h1>
+            <h2>Id : {this.props.id}</h2>
+            <h2>Name :{this.props.name}</h2>
+            <h2>Status : {this.props.status ? "Available" : "Not Available"}</h2>
+            <h2>Age : {this.props.age}</h2>
+            <address>
+                <p>city: {this.props.address.city}</p>
+            </address>
+            <ol>
+                {
+                    this.props.skills.map(skill => {
+                        return <li>{skill}</li>
+                    })
+                }
+            </ol>
+        </div>
+    }
+
+}
+
+//Default Props are props which are supplied when a property is not supplied.
+Profile.defaultProps = {
+    id: 0,
+    name: 'Name',
+    age: 18,
+    status: false,
+    address: {
+        city: 'New York'
+    },
+    skills: ['skill1', 'skill2']
+}
+
+
+
+const App = () => {
+    return <>
+        <Profile id={1} name="Subramaian Murugan" age={18} status={true} address={{ city: 'Coimbatore' }} skills={["react", "java"]} />
+        <Profile id={2} name="Murugan" age={34} address={{ city: 'Delhi' }} skills={["microservices", "node js"]} />
+        <Profile />
+    </>
+}
+const rootElement = ReactDOM.createRoot(document.getElementById('root'))
+rootElement.render(<App />)
+

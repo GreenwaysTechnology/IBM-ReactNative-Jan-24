@@ -1,28 +1,23 @@
-import React from "react"
 import ReactDOM from "react-dom/client"
 
-class Profile extends React.Component {
-
-    render() {
-        return <div>
-            <h1>Profile Details</h1>
-            <h2>Id : {this.props.id}</h2>
-            <h2>Name :{this.props.name}</h2>
-            <h2>Status : {this.props.status ? "Available" : "Not Available"}</h2>
-            <h2>Age : {this.props.age}</h2>
-            <address>
-                <p>city: {this.props.address.city}</p>
-            </address>
-            <ol>
-                {
-                    this.props.skills.map(skill => {
-                        return <li>{skill}</li>
-                    })
-                }
-            </ol>
-        </div>
-    }
-
+const Profile = (props) => {
+    return <div>
+        <h1>Profile Details</h1>
+        <h2>Id : {props.id}</h2>
+        <h2>Name :{props.name}</h2>
+        <h2>Status : {props.status ? "Available" : "Not Available"}</h2>
+        <h2>Age : {props.age}</h2>
+        <address>
+            <p>city: {props.address.city}</p>
+        </address>
+        <ol>
+            {
+                props.skills.map(skill => {
+                    return <li>{skill}</li>
+                })
+            }
+        </ol>
+    </div>
 }
 
 //Default Props are props which are supplied when a property is not supplied.
