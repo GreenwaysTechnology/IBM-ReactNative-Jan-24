@@ -387,9 +387,298 @@ const Welcome = () => {
 const rootElement = ReactDOM.createRoot(document.getElementById('root'))
 
 rootElement.render(<Welcome />)
+.....................................................................................
+			  Fragment
+....................................................................................
+Note: some times i dont want root element, but how to avoid compiler errors
+React uses a feature called "React fragements" using fragements you can avoid error..
+
+React Fragement Syntax:
+
+<React.Fragement><React.Fragement>
+<Fragement></Fragement>
+<></>
 
 
 
+Using Framegments:
+import ReactDOM from "react-dom/client"
+// import React, { Fragment } from "react"
+
+// const Welcome = () => {
+//     return <div>
+//         <h1>Hello</h1>
+//         <span>test</span>
+//     </div>
+// }
+// const Welcome = () => {
+//     return <React.Fragment>
+//         <h1>Hello</h1>
+//         <span>test</span>
+//     </React.Fragment>
+// }
+// const Welcome = () => {
+//     return <Fragment>
+//         <h1>Hello</h1>
+//         <span>test</span>
+//     </Fragment>
+// }
+const Welcome = () => {
+    return <>
+        <h1>Hello</h1>
+        <span>test</span>
+    </>
+}
+
+
+const rootElement = ReactDOM.createRoot(document.getElementById('root'))
+
+rootElement.render(<Welcome />)
 
 
 
+3.Component names should start with Uppercase,generally would be noun.
+
+import ReactDOM from "react-dom/client"
+
+const welcome = () => {
+    return <>
+        <h1>Hello</h1>
+        <span>test</span>
+    </>
+}
+
+
+const rootElement = ReactDOM.createRoot(document.getElementById('root'))
+
+rootElement.render(<welcome />)
+
+Warning: The tag <welcome> is unrecognized in this browser. If you meant to render a React component, start its name with an uppercase letter.
+    at welcome
+printWarning @ react-dom.development.js:86
+.....................................................................................
+
+.....................................................................................
+			How jsx code gets compiled?
+
+How code gets compiled?
+
+source code: jsx code
+
+function Welcome() {
+      return <h1>Welcome To React!</h1>;
+}
+|
+babel.js - compiler 
+
+compiled code
+
+function Welcome() {
+  return React.createElement(
+    'h1',
+    null,
+    'Welcome To React!'
+  );
+}
+|
+runtime : react engine
+
+function Welcome() {
+  return React.createElement(
+    'h1',
+    null,
+    'Welcome To React!'
+  );
+}
+|
+//React.createElement
+function createElement(args){
+   document.createElement(args); // low level api call
+}
+...............
+....................................................................................
+			Component tree - Component Composition
+...................................................................................
+
+How to break large ui into smaller and smallar.
+
+Why we need to create components?
+ -Resuablity
+
+DRY
+
+How to create Component tree?
+
+Lets look at the below markup and start thinking in the terms of components...
+
+Blog
+
+import ReactDOM from "react-dom/client"
+
+//Blog Header:
+const BlogHeader = () => <h1>My First Component</h1>
+
+const BlogListItems = () => <>
+    <li>Components are building blocks</li>
+    <li>Components helps to reuse</li>
+    <li>Components helps to scale ui</li>
+</>
+
+const BlogList = () => <ol>
+    <BlogListItems />
+</ol>
+
+const Blog = () => {
+    return <article>
+        <BlogHeader />
+        <BlogList />
+    </article>
+}
+
+const App = () => <>
+    <Blog />
+    <Blog />
+    <Blog />
+    <Blog />
+</>
+
+const root = ReactDOM.createRoot(document.getElementById('root'))
+root.render(<App />)
+
+...................................................................................
+			  Modularzation and Project layout
+.....................................................................................
+
+It means to spilt code,and to keep inside folders and files
+
+Is there a recommended way to structure React projects?
+
+React doesn’t have opinions on how you put files into folders. That said there are a few common approaches popular in the ecosystem you may want to consider.
+
+1.Grouping by features or routes - This is recommended
+2.Grouping by file types -  This is not recommended for large 
+projects
+
+
+common/
+  Avatar.js
+  Avatar.css
+  APIUtils.js
+  APIUtils.test.js
+feed/
+  index.js
+  Feed.js
+  Feed.css
+  FeedStory.js
+  FeedStory.test.js
+  FeedAPI.js
+profile/
+  index.js
+  Profile.js
+  ProfileHeader.js
+  ProfileHeader.css
+  ProfileAPI.js
+
+
+profile,feed,customers,products,payments which are "features"
+
+Grouping by file type
+
+api/
+  APIUtils.js
+  APIUtils.test.js
+  ProfileAPI.js
+  UserAPI.js
+components/
+  Avatar.js
+  Avatar.css
+  Feed.js
+  Feed.css
+  FeedStory.js
+  FeedStory.test.js
+  Profile.js
+  ProfileHeader.js
+  ProfileHeader.css
+
+.....................................................................................
+
+Inside folders we can save file as "Blog.js or Blog.jsx or Blog.tsx"
+
+Recommened as ".jsx or tsx"
+
+jsx or tsx represents the files are component files.
+
+jsx means js projects
+tsx means ts projects.
+
+Root files can't be saved as "jsx" -  index.js and App.js
+
+Eg:
+
+src/App.js
+import { Blog } from "./blog/Blog";
+
+const App = () => <>
+    <Blog />
+</>
+export default App;
+
+src/index.js
+
+import ReactDOM from "react-dom/client"
+import App from "./App"
+
+const rootElement = ReactDOM.createRoot(document.getElementById('root'))
+rootElement.render(<App />)
+const root = ReactDOM.createRoot(document.getElementById('root'))
+root.render(<App />)
+
+src/blog/Blog.jsx
+import { BlogHeader } from "./BlogHeader"
+import { BlogList } from "./BlogList"
+
+export const Blog = () => {
+    return <article>
+        <BlogHeader />
+        <BlogList/>
+    </article>
+}
+
+src/blog/BlogHeader.jsx
+
+export const BlogHeader = () => <h1>My First Component</h1>
+
+src/blog/BlogList.jsx
+
+import { BlogListItems } from "./BlogListItem"
+
+export const BlogList = () => <ol>
+    <BlogListItems />
+</ol>
+
+src/blog/BlogListItems.jsx
+
+export const BlogListItems = () => <>
+    <li>Components are building blocks</li>
+    <li>Components helps to reuse</li>
+    <li>Components helps to scale ui</li>
+</>
+
+In order to see the tree model, we can use react dev tool
+
+https://react.dev/learn/react-developer-tools..
+
+Assignment -1:
+
+Build Layouts based on compoenent composition
+
+ App
+  |
+ Page
+   Header
+     ->Logo
+     ->SearchBar
+   Body 
+     ->Have three blogs
+   Footer
+     ->Copyright
