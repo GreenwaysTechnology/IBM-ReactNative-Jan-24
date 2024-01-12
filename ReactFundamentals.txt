@@ -1830,7 +1830,125 @@ const App = () => {
 const rootElement = ReactDOM.createRoot(document.getElementById('root'))
 rootElement.render(<App />)
 .....................................................................................
-			Hooks
+			        Hooks
 .....................................................................................
+.....................................................................................
+			Hooks
+....................................................................................
+
+What is hook?
+  It is a feature in react and react native to eleminate class components to make every thing functional components.
+
+Why hooks?
+ class components encapsulate the biz logic which cant be reused across the application.
+
+What is hook?
+ hook is just javascript function, may take arg or may return value..
+
+Convtionally every hook starts with "use" Notation
+
+eg:
+ useState
+ useEffect
+ useLayout
+etc....
+
+Hook types:
+1.built in hooks provided by react
+2.custom hooks, we can create our own hooks...
+....................................................................................
+
+import React, { useState } from "react"
+import ReactDOM from "react-dom/client"
+
+//Hooks.
+class Counter_ extends React.Component {
+    state = {
+        counter: 0
+    }
+    render() {
+        return <>
+            <h1>Counter {this.state.counter}</h1>
+            <button onClick={() => {
+                this.setState((state) => {
+                    return { ...state, counter: state.counter + 1 }
+                })
+            }}>+</button>
+        </>
+
+    }
+}
+
+//functional component 
+const Counter = props => {
+    const [counter, setCounter] = useState(0)
+
+    //listener
+    const onIncrement = () => {
+        // setCounter(state => {
+        //     return state + 1
+        // })
+        // setCounter(state =>state + 1)
+        setCounter(counter + 1)
+
+    }
+
+    return <>
+        <h1>Counter {counter}</h1>
+        <button onClick={onIncrement}>+</button>
+        <button onClick={() => {
+            setCounter(counter - 1)
+        }}>-</button>
+
+    </>
+
+}
 
 
+const App = () => {
+    return <Counter />
+}
+const rootElement = ReactDOM.createRoot(document.getElementById('root'))
+rootElement.render(<App />)
+...
+
+Hooks with Object:
+import React, { useState } from "react"
+import ReactDOM from "react-dom/client"
+
+const Review = props => {
+
+    const [review, setReview] = useState({ like: 0, dislike: 0 })
+
+    //listener
+    const onLike = () => {
+        // setReview(review => {
+        //     //immutable object 
+        //     return { ...review, like: review.like + 1 }
+        // })
+        setReview({ ...review, like: review.like + 1 })
+    }
+
+
+    return <div>
+        <h1>Review Application</h1>
+        <h1>Like {review.like} Dislike {review.dislike}</h1>
+        <button onClick={onLike}>Like</button>
+        <button onClick={() => {
+            setReview(review => {
+                //immutable object 
+                return { ...review, dislike: review.dislike + 1 }
+            })
+        }}>Dislike</button>
+
+    </div>
+
+}
+
+
+const App = () => {
+    return <Review />
+}
+const rootElement = ReactDOM.createRoot(document.getElementById('root'))
+rootElement.render(<App />)
+.....................................................................................
