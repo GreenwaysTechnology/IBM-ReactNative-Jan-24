@@ -1,49 +1,77 @@
 import React from "react"
 import ReactDOM from "react-dom/client"
 
-class Profile extends React.Component {
 
-    render() {
-        return <div>
-            <h1>Profile Details</h1>
-            <h2>Id : {this.props.id}</h2>
-            <h2>Name :{this.props.name}</h2>
-            <h2>Status : {this.props.status ? "Available" : "Not Available"}</h2>
-            <h2>Age : {this.props.age}</h2>
-            <address>
-                <p>city: {this.props.address.city}</p>
-            </address>
-            <ol>
-                {
-                    this.props.skills.map(skill => {
-                        return <li>{skill}</li>
-                    })
-                }
-            </ol>
-        </div>
+const Error = props => {
+    return <>
+        <h2>{props.error}</h2>
+    </>
+}
+const Spinner = props => {
+    return <>
+        <h2>Loading....</h2>
+    </>
+}
+const PostList = props => {
+    return <div>
+        {
+            props.posts.map(post => {
+                return <div key={post.id}>
+                    <h2>{post.id}</h2>
+                    <h6>{post.title}</h6>
+                    <p>{post.body}</p>
+                </div>
+            })
+        }
+    </div>
+}
+
+class Posts extends React.Component {
+    state = {
+        isLoaded: false,//spinner status
+        posts: [],
+        error: null
     }
 
+    render() {
+        const { error, isLoaded, posts } = this.state
+        if (error) {
+            return <Error error={error} />
+        } else if (!isLoaded) {
+            return <Spinner />
+        } else {
+            return <PostList posts={posts} />
+        }
+    }
+    componentDidMount() {
+        this.fetchPosts();
+    }
+    fetchPosts = async () => {
+        try {
+            const postsResponse = await fetch('https://jsonplaceholder.typicode.com/posts')
+            const posts = await postsResponse.json()
+            console.log(posts)
+            //slow calls : todo: remove this setTimeout once if you understand the code:
+            setTimeout(() => {
+                this.setState(previousState => {
+                    return Object.assign({}, previousState, { posts: previousState.posts.concat(posts), isLoaded: true })
+                })
+            }, 5000)
+
+        }
+        catch (err) {
+            this.setState(previousState => {
+                return {
+                    ...previousState, isLoaded: true, error: "something went"
+                }
+            })
+        }
+    }
 }
-
-//Default Props are props which are supplied when a property is not supplied.
-Profile.defaultProps = {
-    id: 0,
-    name: 'Name',
-    age: 18,
-    status: false,
-    address: {
-        city: 'New York'
-    },
-    skills: ['skill1', 'skill2']
-}
-
-
 
 const App = () => {
     return <>
-        <Profile id={1} name="Subramaian Murugan" age={18} status={true} address={{ city: 'Coimbatore' }} skills={["react", "java"]} />
-        <Profile id={2} name="Murugan" age={34} address={{ city: 'Delhi' }} skills={["microservices", "node js"]} />
-        <Profile />
+        <Posts />
     </>
 }
 const rootElement = ReactDOM.createRoot(document.getElementById('root'))
