@@ -1830,9 +1830,6 @@ const App = () => {
 const rootElement = ReactDOM.createRoot(document.getElementById('root'))
 rootElement.render(<App />)
 .....................................................................................
-			        Hooks
-.....................................................................................
-.....................................................................................
 			Hooks
 ....................................................................................
 
@@ -1952,3 +1949,81 @@ const App = () => {
 const rootElement = ReactDOM.createRoot(document.getElementById('root'))
 rootElement.render(<App />)
 .....................................................................................
+			useEffect Hook and WebService
+....................................................................................
+
+import React, { useEffect, useState } from "react"
+import ReactDOM from "react-dom/client"
+
+//Using useEffect hook with web service
+const Error = props => {
+    return <>
+        <h2>{props.error}</h2>
+    </>
+}
+const Spinner = props => {
+    return <>
+        <h2>Loading....</h2>
+    </>
+}
+const Posts = () => {
+    let initalState = {
+        isLoaded: false,
+        items: [],
+        error: null
+    }
+    const [posts, setPosts] = useState(initalState)
+
+    //api call with useEffect 
+    async function fetchPosts() {
+        try {
+            const url = 'https://jsonplaceholder.typicode.com/posts'
+            //const values = await (await fetch(url)).json()
+            const response = await fetch(url)
+            const values = await response.json()
+            setPosts({ ...posts, isLoaded: true, items: posts.items.concat(values) })
+        }
+        catch (err) {
+            setPosts({ ...posts, isLoaded: true, error: err })
+        }
+    }
+
+    //ComponentDidMount
+    useEffect(() => {
+        fetchPosts()
+        console.log(posts)
+    }, [])
+
+
+    const { error, isLoaded, items } = posts
+
+    if (error) {
+        return <Error error={error} />
+    } else if (!isLoaded) {
+        return <Spinner />
+    } else {
+        return <PostList posts={items} />
+    }
+
+}
+const PostList = props => {
+    console.log(props)
+    return <div>
+        {
+            props.posts.map(post => {
+                return <div key={post.id}>
+                    <h2>{post.id}</h2>
+                    <h6>{post.title}</h6>
+                    <p>{post.body}</p>
+                </div>
+            })
+        }
+    </div>
+}
+
+
+const App = () => {
+    return <Posts />
+}
+const rootElement = ReactDOM.createRoot(document.getElementById('root'))
+rootElement.render(<App />)
