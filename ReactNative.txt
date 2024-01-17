@@ -884,3 +884,674 @@ RTL:
   Margin and padding applied to the start of an element are applied on the right   side.
 
 ....................................................................................
+....................................................................................
+			Aligning Child elements(Flex Items)
+....................................................................................
+
+In order to align flex items within container we have properties
+
+1.Justify content
+2.Align items
+3.Align self
+4.Align Content
+5.Flex wrap
+
+Justify Content:
+................
+Justify content:
+  Align flex items within the main axis(x axis) of their container.
+
+Flex Direction says that how to organize either row or column
+
+justifyContent: 'flex-start' | 'flex-end' | 'center' | 'space-between' | 'space-around' | 'space-evenly'
+
+
+Flex Direction: row,column,row-reverse,column-reverse + flex-start
+...................................................................
+import { StyleSheet, View } from "react-native";
+
+const App = () => {
+    return <View style={styles.container}>
+        <View style={{ width: 50, height: 50, backgroundColor: 'red' }} />
+        <View style={{ width: 50, height: 50, backgroundColor: 'yellow' }} />
+        <View style={{ width: 50, height: 50, backgroundColor: 'green' }} />
+    </View>
+}
+export default App;
+
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        //flexDirection: 'column',
+        //flexDirection: 'row',
+        //flexDirection: 'column-reverse',
+        flexDirection: 'row-reverse',
+        justifyContent: 'flex-start',
+        backgroundColor: 'pink'
+    }
+})
+
+Flex Direction: row,column,row-reverse,column-reverse + flex-end
+...................................................................
+
+import { StyleSheet, View } from "react-native";
+
+const App = () => {
+    return <View style={styles.container}>
+        <View style={{ width: 50, height: 50, backgroundColor: 'red' }} />
+        <View style={{ width: 50, height: 50, backgroundColor: 'yellow' }} />
+        <View style={{ width: 50, height: 50, backgroundColor: 'green' }} />
+    </View>
+}
+export default App;
+
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        // flexDirection: 'column',
+        //flexDirection: 'row',
+        //flexDirection: 'column-reverse',
+        flexDirection: 'row-reverse',
+        justifyContent: 'flex-end',
+        backgroundColor: 'pink'
+    }
+})
+.....................................................................................
+Flex Direction: row,column,row-reverse,column-reverse + center
+...................................................................
+import { StyleSheet, View } from "react-native";
+
+const App = () => {
+    return <View style={styles.container}>
+        <View style={{ width: 50, height: 50, backgroundColor: 'red' }} />
+        <View style={{ width: 50, height: 50, backgroundColor: 'yellow' }} />
+        <View style={{ width: 50, height: 50, backgroundColor: 'green' }} />
+    </View>
+}
+export default App;
+
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        // flexDirection: 'column',
+        //flexDirection: 'row',
+        //flexDirection: 'column-reverse',
+        flexDirection: 'row-reverse',
+        justifyContent: 'center',
+        backgroundColor: 'pink'
+    }
+})
+Flex Direction: row,column,row-reverse,column-reverse + space-between.
+  Evenly space off children across the container's main axis,
+distributing the remaining space between the children.
+
+import { StyleSheet, View } from "react-native";
+
+const App = () => {
+    return <View style={styles.container}>
+        <View style={{ width: 50, height: 50, backgroundColor: 'red' }} />
+        <View style={{ width: 50, height: 50, backgroundColor: 'yellow' }} />
+        <View style={{ width: 50, height: 50, backgroundColor: 'green' }} />
+    </View>
+}
+export default App;
+
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        //flexDirection: 'column',
+        //flexDirection: 'row',
+        //flexDirection: 'column-reverse',
+        flexDirection: 'row-reverse',
+        justifyContent: 'space-between',
+        backgroundColor: 'pink'
+    }
+})
+....................................................................................
+Flex Direction: row,column,row-reverse,column-reverse + space-around
+
+  Evenly space off children across the container's main axis,
+distributing the remaining space around the children.
+  Compared to space-between and space around will result in space being distributed to the begining of first child and end of the last child.
+
+
+import { StyleSheet, View } from "react-native";
+
+const App = () => {
+    return <View style={styles.container}>
+        <View style={{ width: 50, height: 50, backgroundColor: 'red' }} />
+        <View style={{ width: 50, height: 50, backgroundColor: 'yellow' }} />
+        <View style={{ width: 50, height: 50, backgroundColor: 'green' }} />
+    </View>
+}
+export default App;
+
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        //flexDirection: 'column',
+        //flexDirection: 'row',
+        //flexDirection: 'column-reverse',
+        flexDirection: 'row-reverse',
+        justifyContent: 'space-around',
+        backgroundColor: 'pink'
+    }
+})
+
+Flex Direction: row,column,row-reverse,column-reverse + space-evenly
+
+Evenly distribute children within the alignment container along the main axis.
+The spacing between each pair of adjacent items, the main-start edge and the first item, and the main end edge and the last item, are all exactly the same.
+
+import { StyleSheet, View } from "react-native";
+
+const App = () => {
+    return <View style={styles.container}>
+        <View style={{ width: 50, height: 50, backgroundColor: 'red' }} />
+        <View style={{ width: 50, height: 50, backgroundColor: 'yellow' }} />
+        <View style={{ width: 50, height: 50, backgroundColor: 'green' }} />
+    </View>
+}
+export default App;
+
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        // flexDirection: 'column',
+        //flexDirection: 'row',
+        //flexDirection: 'column-reverse',
+        flexDirection: 'row-reverse',
+        justifyContent: 'space-evenly',
+        backgroundColor: 'pink'
+    }
+})
+.....................................................................................
+Align items:
+...........
+
+Align Items describes how to align children along with cross axis(y) of the container.
+It is similar to JustifyContent but instead of applying to the main axis, alignItems applies to the cross axis.
+
+AlignItems: 'stretch' | 'flex-start',|'flex-end' | 'center'| 'baseline'
+
+stretch:
+ It is default value , Stretch children of a container to match the "height" of the container's cross axis
+
+Flex Direction: row,column,row-reverse,column-reverse + stretch.
+
+
+import { StyleSheet, View } from "react-native";
+
+const App = () => {
+    return <View style={styles.container}>
+        <View style={{ width: 50, height: 50, backgroundColor: 'red' }} />
+        <View style={{ width: 50, height: 50, backgroundColor: 'yellow' }} />
+        {/* <View style={{ width: 50, height: 50, backgroundColor: 'green' }} /> */}
+        <View style={{ height: 100, backgroundColor: 'steelblue', width: 'auto', minWidth: 50 }} />
+    </View>
+}
+export default App;
+
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        // flexDirection: 'column',
+        //flexDirection: 'row',
+        //flexDirection: 'column-reverse',
+        // flexDirection: 'row-reverse',
+        alignItems: 'stretch',
+        backgroundColor: 'pink'
+    }
+})
+...................
+
+Flex Direction: row,column,row-reverse,column-reverse + flex-start
+
+
+import { StyleSheet, View } from "react-native";
+
+const App = () => {
+    return <View style={styles.container}>
+        <View style={{ width: 50, height: 50, backgroundColor: 'red' }} />
+        <View style={{ width: 50, height: 50, backgroundColor: 'yellow' }} />
+        <View style={{ width: 50, height: 50, backgroundColor: 'green' }} />
+
+    </View>
+}
+export default App;
+
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        //flexDirection: 'column',
+        //flexDirection: 'row',
+        flexDirection: 'column-reverse',
+        //flexDirection: 'row-reverse',
+        alignItems: 'flex-start',
+        backgroundColor: 'pink'
+    }
+})
+...................................................................................
+
+Flex Direction: row,column,row-reverse,column-reverse + flex-end
+
+
+import { StyleSheet, View } from "react-native";
+
+const App = () => {
+    return <View style={styles.container}>
+        <View style={{ width: 50, height: 50, backgroundColor: 'red' }} />
+        <View style={{ width: 50, height: 50, backgroundColor: 'yellow' }} />
+        <View style={{ width: 50, height: 50, backgroundColor: 'green' }} />
+
+    </View>
+}
+export default App;
+
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        //flexDirection: 'column',
+        //flexDirection: 'row',
+        flexDirection: 'column-reverse',
+        //flexDirection: 'row-reverse',
+        alignItems: 'flex-end',
+        backgroundColor: 'pink'
+    }
+})
+
+Flex Direction: row,column,row-reverse,column-reverse + center
+
+
+import { StyleSheet, View } from "react-native";
+
+const App = () => {
+    return <View style={styles.container}>
+        <View style={{ width: 50, height: 50, backgroundColor: 'red' }} />
+        <View style={{ width: 50, height: 50, backgroundColor: 'yellow' }} />
+        <View style={{ width: 50, height: 50, backgroundColor: 'green' }} />
+
+    </View>
+}
+export default App;
+
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        flexDirection: 'column',
+        //flexDirection: 'row',
+        // flexDirection: 'column-reverse',
+        // flexDirection: 'row-reverse',
+        alignItems: 'center',
+        backgroundColor: 'pink'
+    }
+})
+.....................................................................................
+			 Align Items + Justify Content
+.....................................................................................
+import { StyleSheet, View } from "react-native";
+
+const App = () => {
+    return <View style={styles.container}>
+        <View style={{ width: 50, height: 50, backgroundColor: 'red' }} />
+        <View style={{ width: 50, height: 50, backgroundColor: 'yellow' }} />
+        <View style={{ width: 50, height: 50, backgroundColor: 'green' }} />
+
+    </View>
+}
+export default App;
+
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        flexDirection: 'column',
+        //flexDirection: 'row',
+        // flexDirection: 'column-reverse',
+        // flexDirection: 'row-reverse',
+        //alignItems: 'center',
+        //justifyContent: 'space-evenly',
+        justifyContent: 'flex-start',
+        alignItems: 'center',
+        backgroundColor: 'pink'
+    }
+})
+.....................................................................................
+.....................................................................................
+				Align self - child element 
+....................................................................................
+Align self is similar to Align items and justify content but align self is going to have power child elements can controler their alignments.
+align self can override the values set by alignItems.
+
+
+Elements can align itself.
+
+alignSelf: 'stretch' | 'flex-start',|'flex-end' | 'center'| 'baseline'
+
+import { StyleSheet, View } from "react-native";
+
+const App = () => {
+    return <View style={styles.container}>
+        <View style={{
+            alignSelf: 'stretch',
+            width: 'auto',
+            minWidth: 50,
+            height: 50,
+            width: 50,
+            backgroundColor: 'red',
+        }}
+
+        />
+        <View style={{
+            backgroundColor: 'skyblue', alignSelf: 'center', height: 50,
+            width: 50
+        }} />
+        <View style={{
+            height: 50,
+            width: 50, backgroundColor: 'steelblue', alignSelf: 'flex-end'
+        }} />
+
+    </View>
+}
+export default App;
+
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        backgroundColor: 'pink',
+        height: 60,
+    }
+})
+...................................................................................
+			Flex wrap
+..................................................................................\
+if more childrens beyond container size, it starts overflow, in order avoid overflow
+meaning that you want to lay elements within container... we can use flex wrap.
+
+import { StyleSheet, View, Text } from "react-native";
+
+const App = () => {
+    return <View style={styles.container}>
+        <Text style={styles.headerStyle}>Flex wrap</Text>
+        <View style={styles.elementsContainer}>
+            <View style={{ width: 50, height: 50, backgroundColor: 'red' }} />
+            <View style={{ width: 50, height: 50, backgroundColor: 'yellow' }} />
+            <View style={{ width: 50, height: 50, backgroundColor: 'green' }} />
+            <View style={{ width: 50, height: 50, backgroundColor: 'yellow' }} />
+            <View style={{ width: 50, height: 50, backgroundColor: 'green' }} />
+
+            <View style={{ width: 50, height: 50, backgroundColor: 'yellow' }} />
+            <View style={{ width: 50, height: 50, backgroundColor: 'green' }} />
+
+            <View style={{ width: 50, height: 50, backgroundColor: 'yellow' }} />
+            <View style={{ width: 50, height: 50, backgroundColor: 'green' }} />
+
+            <View style={{ width: 50, height: 50, backgroundColor: 'white' }} />
+            <View style={{ width: 50, height: 50, backgroundColor: 'blue' }} />
+            <View style={{ width: 50, height: 50, backgroundColor: 'white' }} />
+            <View style={{ width: 50, height: 50, backgroundColor: 'blue' }} />
+            <View style={{ width: 50, height: 50, backgroundColor: 'white' }} />
+            <View style={{ width: 50, height: 50, backgroundColor: 'blue' }} />
+            <View style={{ width: 50, height: 50, backgroundColor: 'white' }} />
+            <View style={{ width: 50, height: 50, backgroundColor: 'blue' }} />
+            <View style={{ width: 50, height: 50, backgroundColor: 'white' }} />
+            <View style={{ width: 50, height: 50, backgroundColor: 'blue' }} />
+            <View style={{ width: 50, height: 50, backgroundColor: 'white' }} />
+            <View style={{ width: 50, height: 50, backgroundColor: 'blue' }} />
+            <View style={{ width: 50, height: 50, backgroundColor: 'white' }} />
+            <View style={{ width: 50, height: 50, backgroundColor: 'blue' }} />
+            <View style={{ width: 50, height: 50, backgroundColor: 'white' }} />
+            <View style={{ width: 50, height: 50, backgroundColor: 'blue' }} />
+            <View style={{ width: 50, height: 50, backgroundColor: 'white' }} />
+            <View style={{ width: 50, height: 50, backgroundColor: 'blue' }} />
+            <View style={{ width: 50, height: 50, backgroundColor: 'white' }} />
+            <View style={{ width: 50, height: 50, backgroundColor: 'blue' }} />
+            <View style={{ width: 50, height: 50, backgroundColor: 'white' }} />
+            <View style={{ width: 50, height: 50, backgroundColor: 'blue' }} />
+            <View style={{ width: 50, height: 50, backgroundColor: 'white' }} />
+            <View style={{ width: 50, height: 50, backgroundColor: 'blue' }} />
+            <View style={{ width: 50, height: 50, backgroundColor: 'white' }} />
+            <View style={{ width: 50, height: 50, backgroundColor: 'blue' }} />
+            <View style={{ width: 50, height: 50, backgroundColor: 'white' }} />
+            <View style={{ width: 50, height: 50, backgroundColor: 'blue' }} />
+            <View style={{ width: 50, height: 50, backgroundColor: 'white' }} />
+            <View style={{ width: 50, height: 50, backgroundColor: 'blue' }} />
+            <View style={{ width: 50, height: 50, backgroundColor: 'white' }} />
+            <View style={{ width: 50, height: 50, backgroundColor: 'blue' }} />
+            <View style={{ width: 50, height: 50, backgroundColor: 'white' }} />
+            <View style={{ width: 50, height: 50, backgroundColor: 'blue' }} />
+            <View style={{ width: 50, height: 50, backgroundColor: 'white' }} />
+            <View style={{ width: 50, height: 50, backgroundColor: 'blue' }} />
+            <View style={{ width: 50, height: 50, backgroundColor: 'white' }} />
+            <View style={{ width: 50, height: 50, backgroundColor: 'blue' }} />
+            <View style={{ width: 50, height: 50, backgroundColor: 'white' }} />
+            <View style={{ width: 50, height: 50, backgroundColor: 'blue' }} />
+            <View style={{ width: 50, height: 50, backgroundColor: 'white' }} />
+            <View style={{ width: 50, height: 50, backgroundColor: 'blue' }} />
+            <View style={{ width: 50, height: 50, backgroundColor: 'white' }} />
+            <View style={{ width: 50, height: 50, backgroundColor: 'blue' }} />
+            <View style={{ width: 50, height: 50, backgroundColor: 'white' }} />
+            <View style={{ width: 50, height: 50, backgroundColor: 'blue' }} />
+            <View style={{ width: 50, height: 50, backgroundColor: 'white' }} />
+            <View style={{ width: 50, height: 50, backgroundColor: 'blue' }} />
+            <View style={{ width: 50, height: 50, backgroundColor: 'white' }} />
+            <View style={{ width: 50, height: 50, backgroundColor: 'blue' }} />
+
+
+        </ View>
+    </View>
+}
+export default App;
+
+const styles = StyleSheet.create({
+    container: {
+        flex: 1
+    },
+    headerStyle: {
+        fontSize: 29,
+        textAlign: 'center',
+        fontWeight: 'bold',
+        marginBottom: 24,
+        color: 'blue'
+    },
+    elementsContainer: {
+        flex: 1,
+        backgroundColor: 'black',
+        flexDirection: 'row',
+        flexWrap: 'wrap',
+        justifyContent: 'center',
+        marginBottom: 24
+    }
+
+})
+
+....................................................................................
+				Gap
+....................................................................................
+
+How to allocate space among elements?
+
+ Flex gap
+ =>Column gap
+ =>Row gap				
+
+
+import { StyleSheet, View, Text } from "react-native";
+
+const App = () => {
+    return <View style={styles.container}>
+        <Text style={styles.headerStyle}>Flex wrap</Text>
+        <View style={styles.elementsContainer}>
+            <View style={{ width: 50, height: 50, backgroundColor: 'red' }} />
+            <View style={{ width: 50, height: 50, backgroundColor: 'yellow' }} />
+            <View style={{ width: 50, height: 50, backgroundColor: 'green' }} />
+            <View style={{ width: 50, height: 50, backgroundColor: 'yellow' }} />
+            <View style={{ width: 50, height: 50, backgroundColor: 'green' }} />
+
+            <View style={{ width: 50, height: 50, backgroundColor: 'yellow' }} />
+            <View style={{ width: 50, height: 50, backgroundColor: 'green' }} />
+
+            <View style={{ width: 50, height: 50, backgroundColor: 'yellow' }} />
+            <View style={{ width: 50, height: 50, backgroundColor: 'green' }} />
+
+            <View style={{ width: 50, height: 50, backgroundColor: 'white' }} />
+            <View style={{ width: 50, height: 50, backgroundColor: 'blue' }} />
+            <View style={{ width: 50, height: 50, backgroundColor: 'white' }} />
+            <View style={{ width: 50, height: 50, backgroundColor: 'blue' }} />
+            <View style={{ width: 50, height: 50, backgroundColor: 'white' }} />
+            <View style={{ width: 50, height: 50, backgroundColor: 'blue' }} />
+            <View style={{ width: 50, height: 50, backgroundColor: 'white' }} />
+            <View style={{ width: 50, height: 50, backgroundColor: 'blue' }} />
+            <View style={{ width: 50, height: 50, backgroundColor: 'white' }} />
+            <View style={{ width: 50, height: 50, backgroundColor: 'blue' }} />
+            <View style={{ width: 50, height: 50, backgroundColor: 'white' }} />
+            <View style={{ width: 50, height: 50, backgroundColor: 'blue' }} />
+            <View style={{ width: 50, height: 50, backgroundColor: 'white' }} />
+            <View style={{ width: 50, height: 50, backgroundColor: 'blue' }} />
+            <View style={{ width: 50, height: 50, backgroundColor: 'white' }} />
+            <View style={{ width: 50, height: 50, backgroundColor: 'blue' }} />
+            <View style={{ width: 50, height: 50, backgroundColor: 'white' }} />
+            <View style={{ width: 50, height: 50, backgroundColor: 'blue' }} />
+            <View style={{ width: 50, height: 50, backgroundColor: 'white' }} />
+            <View style={{ width: 50, height: 50, backgroundColor: 'blue' }} />
+            <View style={{ width: 50, height: 50, backgroundColor: 'white' }} />
+            <View style={{ width: 50, height: 50, backgroundColor: 'blue' }} />
+            <View style={{ width: 50, height: 50, backgroundColor: 'white' }} />
+            <View style={{ width: 50, height: 50, backgroundColor: 'blue' }} />
+            <View style={{ width: 50, height: 50, backgroundColor: 'white' }} />
+            <View style={{ width: 50, height: 50, backgroundColor: 'blue' }} />
+            <View style={{ width: 50, height: 50, backgroundColor: 'white' }} />
+            <View style={{ width: 50, height: 50, backgroundColor: 'blue' }} />
+            <View style={{ width: 50, height: 50, backgroundColor: 'white' }} />
+            <View style={{ width: 50, height: 50, backgroundColor: 'blue' }} />
+            <View style={{ width: 50, height: 50, backgroundColor: 'white' }} />
+            <View style={{ width: 50, height: 50, backgroundColor: 'blue' }} />
+            <View style={{ width: 50, height: 50, backgroundColor: 'white' }} />
+            <View style={{ width: 50, height: 50, backgroundColor: 'blue' }} />
+            <View style={{ width: 50, height: 50, backgroundColor: 'white' }} />
+            <View style={{ width: 50, height: 50, backgroundColor: 'blue' }} />
+            <View style={{ width: 50, height: 50, backgroundColor: 'white' }} />
+            <View style={{ width: 50, height: 50, backgroundColor: 'blue' }} />
+            <View style={{ width: 50, height: 50, backgroundColor: 'white' }} />
+            <View style={{ width: 50, height: 50, backgroundColor: 'blue' }} />
+            <View style={{ width: 50, height: 50, backgroundColor: 'white' }} />
+            <View style={{ width: 50, height: 50, backgroundColor: 'blue' }} />
+            <View style={{ width: 50, height: 50, backgroundColor: 'white' }} />
+            <View style={{ width: 50, height: 50, backgroundColor: 'blue' }} />
+            <View style={{ width: 50, height: 50, backgroundColor: 'white' }} />
+            <View style={{ width: 50, height: 50, backgroundColor: 'blue' }} />
+            <View style={{ width: 50, height: 50, backgroundColor: 'white' }} />
+            <View style={{ width: 50, height: 50, backgroundColor: 'blue' }} />
+            <View style={{ width: 50, height: 50, backgroundColor: 'white' }} />
+            <View style={{ width: 50, height: 50, backgroundColor: 'blue' }} />
+
+
+        </ View>
+    </View>
+}
+export default App;
+
+const styles = StyleSheet.create({
+    container: {
+        flex: 1
+    },
+    headerStyle: {
+        fontSize: 29,
+        textAlign: 'center',
+        fontWeight: 'bold',
+        marginBottom: 24,
+        color: 'blue'
+    },
+    elementsContainer: {
+        flex: 1,
+        backgroundColor: 'black',
+        flexDirection: 'row',
+        flexWrap: 'wrap',
+        rowGap: 10,
+        columnGap: 10,
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginBottom: 24
+    }
+
+})
+
+Guidelins, you can use for layout design
+https://yogalayout.com/
+https://medium.com/wix-engineering/the-full-react-native-layout-cheat-sheet-a4147802405c.....................................................................................
+			Style Merging
+
+Syntax:
+ style ={[styles.box, {backgroundColor:'yellow'}]}
+
+
+import { StyleSheet, View, Text } from "react-native";
+
+const App = () => {
+    return <View style={styles.container}>
+        <View style={[styles.box,
+        { backgroundColor: 'pink' }]
+        } />
+        <View style={[styles.box, { backgroundColor: 'green' }]} />
+        <View style={[styles.box, { backgroundColor: 'yellow' }]} />
+    </View>
+}
+export default App;
+
+const styles = StyleSheet.create({
+    container: {
+        flex: 1
+    },
+    box: {
+        height: 100,
+        width: 100
+    }
+
+})
+....................................................................................
+			  Style Sheet Composition
+...................................................................................
+
+Coimbine two or more styles into one style, like array pattern, but style provides method for that.
+
+Stylesheet.compose(style1,style2,style3)
+style1 can be overriden by styles 2
+
+import { StyleSheet, View, Text } from "react-native";
+
+const App = () => {
+    return <View style={container}>
+        <Text style={text}>Hello</Text>
+    </View>
+}
+export default App;
+
+//Common style
+const page = StyleSheet.create({
+    container: {
+        flex: 1,
+        padding: 24,
+        backgroundColor: 'pink'
+    },
+    text: {
+        fontSize: 30,
+        color: '#000'
+    }
+
+})
+//lists Style 
+const lists = StyleSheet.create({
+    listContainer: {
+        flex: 1,
+        backgroundColor: '#61dafb',
+    },
+    listItem: {
+        fontSize: 30,
+        fontWeight: 'bold'
+    }
+
+})
+
+//merge two styles 
+const container = StyleSheet.compose(page.container, lists.container)
+const text = StyleSheet.compose(page.text, lists.listItem)
+....................................................................................

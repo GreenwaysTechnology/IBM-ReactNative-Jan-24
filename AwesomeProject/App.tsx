@@ -1,21 +1,38 @@
-import { StyleSheet, View } from "react-native";
+import { StyleSheet, View, Text } from "react-native";
 
 const App = () => {
-    return <View style={styles.container}>
-        <View style={{ width: 50, height: 50, backgroundColor: 'red' }} />
-        <View style={{ width: 50, height: 50, backgroundColor: 'yellow' }} />
-        <View style={{ width: 50, height: 50, backgroundColor: 'green' }} />
+    return <View style={container}>
+        <Text style={text}>Hello</Text>
     </View>
 }
 export default App;
 
-const styles = StyleSheet.create({
+//Common style
+const page = StyleSheet.create({
     container: {
         flex: 1,
-        // flexDirection: 'column',
-        // flexDirection: 'row',
-        // flexDirection: 'column-reverse',
-        flexDirection: 'row-reverse',
+        padding: 24,
         backgroundColor: 'pink'
+    },
+    text: {
+        fontSize: 30,
+        color: '#000'
     }
+
 })
+//lists Style 
+const lists = StyleSheet.create({
+    listContainer: {
+        flex: 1,
+        backgroundColor: '#61dafb',
+    },
+    listItem: {
+        fontSize: 30,
+        fontWeight: 'bold'
+    }
+
+})
+
+//merge two styles 
+const container = StyleSheet.compose(page.container, lists.listContainer)
+const text = StyleSheet.compose(page.text, lists.listItem)
