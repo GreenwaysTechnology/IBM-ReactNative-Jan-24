@@ -1555,3 +1555,722 @@ const lists = StyleSheet.create({
 const container = StyleSheet.compose(page.container, lists.container)
 const text = StyleSheet.compose(page.text, lists.listItem)
 ....................................................................................
+....................................................................................
+			   Container Components
+
+Types of Views
+1.View
+2.ScrollView
+3.ListView
+4.SectionList
+
+
+View:
+import { StyleSheet, View, Text } from "react-native";
+
+const App = () => {
+    return <View style={page.container}>
+        <Text style={page.text}>Hello</Text>
+        <Text style={page.text}>Hello</Text>
+        <Text style={page.text}>Hello</Text>
+        <Text style={page.text}>Hello</Text>
+        <Text style={page.text}>Hello</Text>
+        <Text style={page.text}>Hello</Text>
+        <Text style={page.text}>Hello</Text>
+        <Text style={page.text}>Hello</Text>
+        <Text style={page.text}>Hello</Text>
+        <Text style={page.text}>Hello</Text>
+        <Text style={page.text}>Hello</Text>
+        <Text style={page.text}>Hello</Text>
+        <Text style={page.text}>Hello</Text>
+        <Text style={page.text}>Hello</Text>
+        <Text style={page.text}>Hello</Text>
+        <Text style={page.text}>Hello</Text>
+        <Text style={page.text}>Hello</Text>
+        <Text style={page.text}>Hello</Text>
+        <Text style={page.text}>Hello</Text>
+        <Text style={page.text}>Hello</Text>
+        <Text style={page.text}>Hello</Text>
+        <Text style={page.text}>Hello</Text>
+        <Text style={page.text}>Hello</Text>
+
+    </View>
+}
+export default App;
+
+//Common style
+const page = StyleSheet.create({
+    container: {
+        flex: 1,
+        padding: 24,
+        backgroundColor: 'pink'
+    },
+    text: {
+        fontSize: 30,
+        color: '#000'
+    }
+
+})
+.................................................................................
+			Scroll Behaviour
+.................................................................................
+
+View is going to hold child elements, act as container
+ScrollView is going hold child elements , act as container with scrollbar.
+
+import { StyleSheet, ScrollView, Text } from "react-native";
+
+const App = () => {
+    return <ScrollView style={page.container}>
+        <Text style={page.text}>Hello</Text>
+        <Text style={page.text}>Hello</Text>
+        <Text style={page.text}>Hello</Text>
+        <Text style={page.text}>Hello</Text>
+        <Text style={page.text}>Hello</Text>
+        <Text style={page.text}>Hello</Text>
+        <Text style={page.text}>Hello</Text>
+        <Text style={page.text}>Hello</Text>
+        <Text style={page.text}>Hello</Text>
+        <Text style={page.text}>Hello</Text>
+        <Text style={page.text}>Hello</Text>
+        <Text style={page.text}>Hello</Text>
+        <Text style={page.text}>Hello</Text>
+        <Text style={page.text}>Hello</Text>
+        <Text style={page.text}>Hello</Text>
+        <Text style={page.text}>Hello</Text>
+        <Text style={page.text}>Hello</Text>
+        <Text style={page.text}>Hello</Text>
+        <Text style={page.text}>Hello</Text>
+        <Text style={page.text}>Hello</Text>
+        <Text style={page.text}>Hello</Text>
+        <Text style={page.text}>Hello</Text>
+        <Text style={page.text}>Hello</Text>
+        <Text style={page.text}>Hello</Text>
+        <Text style={page.text}>Hello</Text>
+        <Text style={page.text}>Hello</Text>
+        <Text style={page.text}>Hello</Text>
+        <Text style={page.text}>Hello</Text>
+        <Text style={page.text}>Hello</Text>
+        <Text style={page.text}>Hello</Text>
+        <Text style={page.text}>Hello</Text>
+        <Text style={page.text}>Hello</Text>
+        <Text style={page.text}>Hello</Text>
+        <Text style={page.text}>Hello</Text>
+        <Text style={page.text}>Hello</Text>
+    </ScrollView>
+}
+export default App;
+
+//Common style
+const page = StyleSheet.create({
+    container: {
+        flex: 1,
+        padding: 24,
+        backgroundColor: 'pink'
+    },
+    text: {
+        fontSize: 30,
+        color: '#000'
+    }
+
+})
+...................................................................................
+				List Views
+...................................................................................
+
+React Native provides a suit of components for presenting lists of data, Generally, You will want to use "FlatList or Section List"
+
+FlatList:
+ It displays a scrolling list of changining, but similary structured data.
+ FlatList works well for long list of data , where number of items change over time.
+ When compare to ScrollView,The FlatList only renders elements that are currently s howing on the screen, not all the elements at onces.
+
+FlatList is similar to array.map in react.
+
+FlatList requires two properties:
+
+1.data
+  data Source
+2.renderItem
+  takes one item from the source and returns a formtted component to render.
+
+
+FlatList with HardCoded data.
+.............................
+<FlatList data={dataSource} renderItem={(obj)=>{
+  return<Text>{obj.item.dataSource.property}
+}}
+
+data->Data Prop is called datasource which is plain array
+renderItem -
+  Takes an item from data prop and renders it into list
+
+renderItem({
+ item:ItemObject(todo,contact),
+ index:number,
+ separators:{
+
+ }
+})
+
+eg:
+import { StyleSheet, View, Text, FlatList } from "react-native";
+
+//mock data 
+const contacts = [{
+    name: 'Subramanian'
+},
+{
+    name: 'Murugan'
+},
+{
+    name: 'Karthik'
+},
+{
+    name: 'Joel'
+},
+{
+    name: 'Sunil'
+},
+{
+    name: 'Naga'
+},
+{
+    name: 'Kamal'
+},
+{
+    name: 'Subramanian'
+},
+{
+    name: 'Murugan'
+},
+{
+    name: 'Karthik'
+},
+{
+    name: 'Joel'
+},
+{
+    name: 'Sunil'
+},
+{
+    name: 'Naga'
+},
+{
+    name: 'Kamal'
+},
+{
+    name: 'Subramanian'
+},
+{
+    name: 'Murugan'
+},
+{
+    name: 'Karthik'
+},
+{
+    name: 'Joel'
+},
+{
+    name: 'Sunil'
+},
+{
+    name: 'Naga'
+},
+{
+    name: 'Kamal'
+}
+
+];
+
+const App = () => {
+    return <View style={page.container}>
+        <Text style={page.text}>Contacts</Text>
+        {/* <FlatList
+            data={contacts}
+            renderItem={(obj) => {
+                console.log(obj)
+                return <Text style={page.item}>{obj.item.name}</Text>
+            }}
+        /> */}
+        {/* <FlatList
+            data={contacts}
+            renderItem={({ item }) => {
+                return <Text style={page.item}>{item.name}</Text>
+            }}
+        /> */}
+        <FlatList
+            data={contacts}
+            renderItem={({ item: { name } }) => {
+                return <Text style={page.item}>{name}</Text>
+            }}
+        />
+    </View>
+}
+export default App;
+
+//Common style
+const page = StyleSheet.create({
+    container: {
+        flex: 1,
+        padding: 24,
+        backgroundColor: 'pink'
+    },
+    item: {
+        padding: 10,
+        fontSize: 18,
+        height: 44,
+        fontWeight: 'bold',
+        color: 'blue'
+
+    },
+    text: {
+        fontSize: 30,
+        textAlign: 'center',
+        color: '#000'
+    }
+
+})
+.....................................................................................
+			 Webservice Integration with FlatList
+.....................................................................................
+import { StyleSheet, View, Text, FlatList, ActivityIndicator } from "react-native";
+import { useState, useEffect } from "react";
+
+const Error = props => {
+    return <>
+        <Text>{props.error}</Text>
+    </>
+}
+const Spinner = props => {
+    return <View style={{ justifyContent: 'center', alignItems: 'center', flex: 1 }}>
+        <ActivityIndicator size='large' color="#0000ff" />
+    </View>
+}
+
+
+const Posts = props => {
+    let initalState = {
+        isLoaded: false,
+        items: [],
+        error: null
+    }
+    const [posts, setPosts] = useState(initalState)
+
+    async function fetchPosts() {
+        try {
+            const url = 'https://jsonplaceholder.typicode.com/posts'
+            const values = await (await fetch(url)).json()
+            setPosts({ ...posts, isLoaded: true, items: posts.items.concat(values) })
+        }
+        catch (err) {
+            setPosts({ ...posts, isLoaded: true, error: err })
+        }
+    }
+    //useEffect : ComponentDidMount 
+    useEffect(() => {
+        setTimeout(() => {
+            fetchPosts()
+        }, 5000)
+    }, [])
+
+    const { error, isLoaded, items } = posts
+    if (error) {
+        return <Error error={error} />
+    } else if (!isLoaded) {
+        return <Spinner />
+    } else {
+        return <FlatList
+            data={items}
+            keyExtractor={item => item.id}
+            renderItem={({ item }) => {
+                return <Text style={page.item}>{item.title}</Text>
+            }}
+        />
+    }
+
+}
+
+
+const App = () => {
+    return <View style={page.container}>
+        <Text style={page.text}>Posts</Text>
+        <Posts />
+    </View>
+}
+export default App;
+
+//Common style
+const page = StyleSheet.create({
+    container: {
+        flex: 1,
+        padding: 24,
+        backgroundColor: 'pink'
+    },
+    item: {
+        padding: 10,
+        fontSize: 18,
+        height: 44,
+        fontWeight: 'bold',
+        color: '#000'
+
+    },
+    text: {
+        fontSize: 30,
+        textAlign: 'center',
+        color: '#000'
+    }
+
+})
+....................................................................................
+			How to select item from List
+
+import { StyleSheet, View, Text, FlatList, ActivityIndicator, Alert } from "react-native";
+import { useState, useEffect } from "react";
+
+const Error = props => {
+    return <>
+        <Text>{props.error}</Text>
+    </>
+}
+const Spinner = props => {
+    return <View style={{ justifyContent: 'center', alignItems: 'center', flex: 1 }}>
+        <ActivityIndicator size='large' color="#0000ff" />
+    </View>
+}
+
+
+const Posts = props => {
+    let initalState = {
+        isLoaded: false,
+        items: [],
+        error: null
+    }
+    const [posts, setPosts] = useState(initalState)
+
+    async function fetchPosts() {
+        try {
+            const url = 'https://jsonplaceholder.typicode.com/posts'
+            const values = await (await fetch(url)).json()
+            setPosts({ ...posts, isLoaded: true, items: posts.items.concat(values) })
+        }
+        catch (err) {
+            setPosts({ ...posts, isLoaded: true, error: err })
+        }
+    }
+    //useEffect : ComponentDidMount 
+    useEffect(() => {
+        setTimeout(() => {
+            fetchPosts()
+        }, 5000)
+    }, [])
+
+    const onSelect = (item) => {
+        Alert.alert(JSON.stringify(item))
+    }
+
+    const { error, isLoaded, items } = posts
+    if (error) {
+        return <Error error={error} />
+    } else if (!isLoaded) {
+        return <Spinner />
+    } else {
+        return <FlatList
+            data={items}
+            keyExtractor={item => item.id}
+            renderItem={({ item }) => {
+                return <Text
+                    style={page.item}
+                    onPress={() => {
+                        onSelect(item)
+                    }}
+                >{item.title}</Text>
+            }}
+        />
+    }
+
+}
+
+
+const App = () => {
+    return <View style={page.container}>
+        <Text style={page.text}>Posts</Text>
+        <Posts />
+    </View>
+}
+export default App;
+
+//Common style
+const page = StyleSheet.create({
+    container: {
+        flex: 1,
+        padding: 24,
+        backgroundColor: 'pink'
+    },
+    item: {
+        padding: 10,
+        fontSize: 18,
+        height: 44,
+        fontWeight: 'bold',
+        color: '#000'
+
+    },
+    text: {
+        fontSize: 30,
+        textAlign: 'center',
+        color: '#000'
+    }
+
+})
+....................................................................................
+			 Select Item with Touchable Features
+.....................................................................................
+
+In order to touchable features , react native offers many components
+
+1.TouchableHighlight
+2.TouchableOpacity
+3.TouchableWithoutFeedBack
+
+TouchableHighlight:
+
+import { StyleSheet, View, Text, FlatList, ActivityIndicator, Alert, TouchableHighlight } from "react-native";
+import { useState, useEffect } from "react";
+
+const Error = props => {
+    return <>
+        <Text>{props.error}</Text>
+    </>
+}
+const Spinner = props => {
+    return <View style={{ justifyContent: 'center', alignItems: 'center', flex: 1 }}>
+        <ActivityIndicator size='large' color="#0000ff" />
+    </View>
+}
+
+
+const Posts = props => {
+    let initalState = {
+        isLoaded: false,
+        items: [],
+        error: null
+    }
+    const [posts, setPosts] = useState(initalState)
+
+    async function fetchPosts() {
+        try {
+            const url = 'https://jsonplaceholder.typicode.com/posts'
+            const values = await (await fetch(url)).json()
+            setPosts({ ...posts, isLoaded: true, items: posts.items.concat(values) })
+        }
+        catch (err) {
+            setPosts({ ...posts, isLoaded: true, error: err })
+        }
+    }
+    //useEffect : ComponentDidMount 
+    useEffect(() => {
+        setTimeout(() => {
+            fetchPosts()
+        }, 5000)
+    }, [])
+
+    const onSelect = (item) => {
+        Alert.alert(JSON.stringify(item))
+    }
+
+    const { error, isLoaded, items } = posts
+    if (error) {
+        return <Error error={error} />
+    } else if (!isLoaded) {
+        return <Spinner />
+    } else {
+        return <FlatList
+            data={items}
+            keyExtractor={item => item.id}
+            renderItem={({ item }) => {
+                return <TouchableHighlight activeOpacity={0.4} underlayColor='yellow' onPress={() => { onSelect(item) }} >
+                    <View>
+                        <Text style={page.item}>{item.title}</Text>
+                    </View>
+                </TouchableHighlight>
+            }}
+        />
+    }
+
+}
+
+
+const App = () => {
+    return <View style={page.container}>
+        <Text style={page.text}>Posts</Text>
+        <Posts />
+    </View>
+}
+export default App;
+
+//Common style
+const page = StyleSheet.create({
+    container: {
+        flex: 1,
+        padding: 24,
+        backgroundColor: 'pink'
+    },
+    item: {
+        padding: 10,
+        fontSize: 18,
+        height: 44,
+        fontWeight: 'bold',
+        color: '#000'
+
+    },
+    text: {
+        fontSize: 30,
+        textAlign: 'center',
+        color: '#000'
+    }
+
+})
+....................................................................................
+				Section List
+....................................................................................
+
+It is special list which shows data based on category, showing nested array.
+
+Syntax:
+<SectionList sections={list} renderItem=>{} renderSectionHeader={} keyKxtractory={}/>
+
+import { StyleSheet, View, Text, SectionList } from "react-native";
+
+//mock data:
+const courses = [{
+    title: 'User Interface',
+    data: [
+        'HTML',
+        'CSS',
+        'Android',
+        'IOS'
+    ]
+},
+{
+    title: 'Back End',
+    data: [
+        'Java',
+        'C#',
+        'Microservices',
+        'Python'
+    ]
+},
+{
+    title: 'Data bases',
+    data: [
+        'Mysql',
+        'Oracle',
+        'Mongo',
+        'Redis'
+    ]
+}
+
+]
+
+const App = () => {
+    return <View style={page.container}>
+        <Text style={[page.text, { textAlign: 'center' }]}>Courses</Text>
+        <SectionList
+            sections={courses}
+            renderItem={({ item }) => {
+                return <Text style={[page.text, { backgroundColor: 'yellow' }]}>{item}</Text>
+            }}
+            keyExtractor={(item, index) => {
+                return item + index
+            }}
+            renderSectionHeader={({ section: { title } }) => {
+                return <Text style={page.text}>{title}</Text>
+            }}
+
+        />
+    </View>
+}
+export default App;
+
+//Common style
+const page = StyleSheet.create({
+    container: {
+        flex: 1,
+        padding: 24,
+        backgroundColor: 'pink'
+    },
+    text: {
+        fontSize: 30,
+        color: '#000'
+    }
+
+})
+.....................................................................................
+			TextInput
+....................................................................................
+
+How to get Input from the User?
+
+import { useState } from "react";
+import { StyleSheet, View, Text, TextInput, Button } from "react-native";
+
+const UserName = props => {
+
+    const [text, setText] = useState('Your Name')
+    const onUpdate = () => {
+        console.log('test')
+        setText(text)
+        console.log(text)
+    }
+    return <View>
+        <TextInput style={page.input} onChange={() => {
+            setText(text)
+        }} />
+        <Button onPress={onUpdate} title="Get Input" />
+    </View>
+}
+
+import { useState } from "react";
+import { StyleSheet, View, Text, TextInput, Button, Alert } from "react-native";
+
+const UserName = props => {
+    const [text, onSetName] = useState('Your Name')
+    const onUpdate = () => {
+        console.log('Your Name is', text)
+        Alert.alert(`Your Name is ${text}`)
+        onSetName('')
+    }
+    return <View>
+        <TextInput style={page.input} onChangeText={onSetName} value={text}
+        />
+        <Button onPress={onUpdate} title="Get Input" />
+    </View>
+}
+const App = () => {
+
+    return <View style={page.container}>
+        <UserName />
+    </View>
+}
+export default App;
+
+//Common style
+const page = StyleSheet.create({
+    container: {
+        flex: 1,
+        padding: 24,
+        backgroundColor: 'pink'
+    },
+    input: {
+        height: 40,
+        margin: 12,
+        borderWidth: 1,
+        padding: 10,
+        backgroundColor: 'white'
+    },
+    text: {
+        fontSize: 30,
+        color: '#000'
+    }
+
+})
