@@ -3282,9 +3282,7 @@ const styles = StyleSheet.create({
 });
 ..................................................................................
 				Drawer Navigation
-..................................................................................				     Drawer
-.....................................................................................
-
+..................................................................................
 Steps to install drawer dependency:
 ....................................
 
@@ -3296,7 +3294,6 @@ npm install react-native-gesture-handler react-native-reanimated
 2.plugin configuration in babel.config.js
 
 module.exports = {
-  presets: ['module:metro-react-native-babel-preset'],
   plugins: ['react-native-reanimated/plugin'],
 };
 
@@ -3351,3 +3348,1193 @@ export default App
 Note:
 import 'react-native-gesture-handler';
   It must be top of the code always.
+....................................................................................
+			 Device Features
+....................................................................................
+.....................................................................................
+				Device Features
+.....................................................................................
+There are so many device features
+
+1.camera
+2.network
+3.contacts
+4.cellar
+5.SMS
+6.GPS
+etc.....
+
+How to access device features?
+
+React native community offeres various libs  to access those services
+https://reactnative.directory/
+https://docs.expo.dev/versions/latest/
+
+Note:
+You can use expo components inside react native projects directly...
+
+Using native serivces inside expo cli projects:
+
+creating expo projects and how to use device features
+
+npx create-expo-app MyExpoApp
+
+1.Location:
+
+How to use location?
+
+=>Inside expo project
+=>Can i use expo components inside bare react native projects- yes 
+
+Steps:
+1.Ensure Platform Compatiability.
+2.npx expo install expo-location
+
+
+
+app.json
+   "expo": {
+      "plugins": [
+        "expo-location",
+        "expo-av"
+      ]
+    },
+
+
+
+import { StatusBar } from 'expo-status-bar';
+import { useEffect, useState } from 'react';
+import { StyleSheet, Text, View } from 'react-native';
+import * as Location from 'expo-location'
+
+export default function App() {
+  const [location, setLocation] = useState(null)
+  const [errorMsg, setErrorMsg] = useState(null)
+
+  useEffect(() => {
+    (async () => {
+      let { status } = await Location.requestForegroundPermissionsAsync();
+      if (status !== 'granted') {
+        setErrorMsg('Permission Denined to access location')
+        return;
+      }
+      let location = await Location.getCurrentPositionAsync({});
+      setLocation(location)
+    })()
+  }, [])
+
+  let text = 'Getting Location....'
+  if (errorMsg) {
+    text = errorMsg
+  } else if (location) {
+    text = JSON.stringify(location)
+  }
+
+  return (
+    <View style={styles.container}>
+      <Text style={{ fontSize: 20, color: 'blue' }}>{text}</Text>
+      <StatusBar style="auto" />
+    </View>
+  );
+}
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#fff',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+});
+
+
+if you are installing expo sdk inside react native cli projects,
+https://docs.expo.dev/bare/installing-expo-modules/
+
+npx install-expo-modules@latest
+
+
+.....................................................................................
+			  Expo-Av : video +audio
+
+
+install expo-av
+
+npx expo install expo-av
+
+
+app.json
+   "expo": {
+      "plugins": [
+        "expo-location",
+        "expo-av"
+      ]
+    },
+
+useRef:
+ useRef is a React Hook that lets you reference a value that’s not needed for rendering.
+
+In React how to refer dom element?
+
+For eg i have text box i need to refer text box inside code
+<text onInput={onGet}>
+
+=>Inside event listener
+
+const onGet = evt=>{ 
+  let textbox=evt.target 
+} 
+
+here textbox is just variable holds text element inside event listener.
+now we can access all properties of text box like value....
+
+=>Using reference -useRef
+
+Without event object , you can access text box value 
+ 
+const inputRef = useRef(initialValue)
+
+<input ref={inputRef} />;
+
+import { StatusBar } from 'expo-status-bar';
+import { useEffect, useRef, useState } from 'react';
+import { StyleSheet, Text, View, Button } from 'react-native';
+import { Video } from 'expo-av'
+
+export default function App() {
+    const video = useRef(null);
+    const [status, setStatus] = useState({})
+
+    return (
+        <View style={styles.container}>
+            <Video
+                ref={video}
+                style={styles.video}
+                source={{
+                    uri: 'http://d23dyxeqlo5psv.cloudfront.net/big_buck_bunny.mp4',
+                }}
+                useNativeControls
+                resizeMode="contain"
+                isLooping
+                onPlaybackStatusUpdate={status => setStatus(() => status)}
+            />
+
+            <View style={styles.buttons}>
+                <Button
+                    title={status.isPlaying ? 'Pause' : 'Play'}
+                    onPress={() =>
+                        status.isPlaying ? video.current.pauseAsync() : video.current.playAsync()
+                    }
+                />
+            </View>
+            <StatusBar style="auto" />
+        </View>
+    );
+}
+
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        backgroundColor: '#fff',
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+    buttons: {
+        flexDirection: 'row',
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    video: {
+        alignSelf: 'center',
+        width: 320,
+        height: 200
+    }
+});
+.....................................................................................
+			  File System
+.....................................................................................
+
+npx expo install  expo-file-system
+npx expo install expo-sharing
+
+app.json
+   "expo": {
+      "plugins": [
+        "expo-location",
+        "expo-av",
+        "expo-filesystem",
+        "expo-sharing"
+      ]
+    }
+
+
+import { StyleSheet, Button, View, Platform } from 'react-native';
+import * as FileSystem from 'expo-file-system';
+import { shareAsync } from 'expo-sharing';
+
+export default function App() {
+    const downloadFromUrl = async () => {
+        const filename = "small.mp4";
+        const result = await FileSystem.downloadAsync(
+            'http://techslides.com/demos/sample-videos/small.mp4',
+            FileSystem.documentDirectory + filename
+        );
+        console.log(result);
+
+        save(result.uri, filename, result.headers["Content-Type"]);
+    };
+
+
+
+    const save = async (uri, filename, mimetype) => {
+        if (Platform.OS === "android") {
+            const permissions = await FileSystem.StorageAccessFramework.requestDirectoryPermissionsAsync();
+            if (permissions.granted) {
+                const base64 = await FileSystem.readAsStringAsync(uri, { encoding: FileSystem.EncodingType.Base64 });
+                await FileSystem.StorageAccessFramework.createFileAsync(permissions.directoryUri, filename, mimetype)
+                    .then(async (uri) => {
+                        await FileSystem.writeAsStringAsync(uri, base64, { encoding: FileSystem.EncodingType.Base64 });
+                    })
+                    .catch(e => console.log(e));
+            } else {
+                shareAsync(uri);
+            }
+        } else {
+            shareAsync(uri);
+        }
+    };
+
+    return (
+        <View style={styles.container}>
+            <Button title="Download From URL" onPress={downloadFromUrl} />
+        </View>
+    );
+}
+
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        backgroundColor: '#fff',
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+});
+.....................................................................................
+		  Bare React Native Projects and Expo Components
+....................................................................................
+
+There  are two ways to intall expo modules int bare react native project
+
+https://docs.expo.dev/bare/installing-expo-modules/
+
+
+Steps:
+1.npm install expo
+
+2.MainActivitiy.java
+package com.awesomenativeproject;
+import com.facebook.react.ReactActivity;
+import expo.modules.ReactActivityDelegateWrapper;
+import com.facebook.react.ReactActivityDelegate;
+import com.facebook.react.defaults.DefaultNewArchitectureEntryPoint;
+import com.facebook.react.defaults.DefaultReactActivityDelegate;
+
+public class MainActivity extends ReactActivity {
+
+  /**
+   * Returns the name of the main component registered from JavaScript. This is
+   * used to schedule
+   * rendering of the component.
+   */
+  @Override
+  protected String getMainComponentName() {
+    return "AwesomeNativeProject";
+  }
+
+  /**
+   * Returns the instance of the {@link ReactActivityDelegate}. Here we use a util
+   * class {@link
+   * DefaultReactActivityDelegate} which allows you to easily enable Fabric and
+   * Concurrent React
+   * (aka React 18) with two boolean flags.
+   */
+  @Override
+  protected ReactActivityDelegate createReactActivityDelegate() {
+    return new ReactActivityDelegateWrapper(
+        this,
+        BuildConfig.IS_NEW_ARCHITECTURE_ENABLED, new DefaultReactActivityDelegate(
+            this,
+            getMainComponentName(),
+            DefaultNewArchitectureEntryPoint.getFabricEnabled(),
+            // If you opted-in for the New Architecture, we enable the Fabric Renderer.
+            DefaultNewArchitectureEntryPoint.getConcurrentReactEnabled()));
+
+  }
+}
+
+MainApplication.java
+package com.awesomenativeproject;
+
+import android.content.res.Configuration;
+import expo.modules.ApplicationLifecycleDispatcher;
+import expo.modules.ReactNativeHostWrapper;
+import android.app.Application;
+import com.facebook.react.PackageList;
+import com.facebook.react.ReactApplication;
+import com.facebook.react.ReactNativeHost;
+import com.facebook.react.ReactPackage;
+import com.facebook.react.defaults.DefaultNewArchitectureEntryPoint;
+import com.facebook.react.defaults.DefaultReactNativeHost;
+import com.facebook.soloader.SoLoader;
+import java.util.List;
+
+public class MainApplication extends Application implements ReactApplication {
+
+  private final ReactNativeHost mReactNativeHost = new ReactNativeHostWrapper(this, new DefaultReactNativeHost(this) {
+    @Override
+    public boolean getUseDeveloperSupport() {
+      return BuildConfig.DEBUG;
+    }
+
+    @Override
+    protected List<ReactPackage> getPackages() {
+      @SuppressWarnings("UnnecessaryLocalVariable")
+      List<ReactPackage> packages = new PackageList(this).getPackages();
+      // Packages that cannot be autolinked yet can be added manually here, for
+      // example:
+      // packages.add(new MyReactNativePackage());
+      return packages;
+    }
+
+    @Override
+    protected String getJSMainModuleName() {
+      return "index";
+    }
+
+    @Override
+    protected boolean isNewArchEnabled() {
+      return BuildConfig.IS_NEW_ARCHITECTURE_ENABLED;
+    }
+
+    @Override
+    protected Boolean isHermesEnabled() {
+      return BuildConfig.IS_HERMES_ENABLED;
+    }
+  });
+
+  @Override
+  public ReactNativeHost getReactNativeHost() {
+    return mReactNativeHost;
+  }
+
+  @Override
+  public void onCreate() {
+    super.onCreate();
+    SoLoader.init(this, /* native exopackage */ false);
+    if (BuildConfig.IS_NEW_ARCHITECTURE_ENABLED) {
+      // If you opted-in for the New Architecture, we load the native entry point for
+      // this app.
+      DefaultNewArchitectureEntryPoint.load();
+    }
+    ReactNativeFlipper.initializeFlipper(this, getReactNativeHost().getReactInstanceManager());
+  }
+}
+
+
+settings.gradle 
+rootProject.name = 'AwesomeNativeProject'
+apply from: file("../node_modules/@react-native-community/cli-platform-android/native_modules.gradle"); applyNativeModulesSettingsGradle(settings)
+include ':app'
+includeBuild('../node_modules/@react-native/gradle-plugin')
+apply from: new File(["node", "--print", "require.resolve('expo/package.json')"].execute(null, rootDir).text.trim(), "../scripts/autolinking.gradle")
+useExpoModules()
+
+Run command prompt in admin mode and start
+
+npm run android.
+.....................................................................................
+			   Custom Native Modules
+....................................................................................
+Android Native Modules:
+
+ How to access platform services into react native app..
+
+In this example i am going to build Calendar Module, that will allow you to access Android's Calendar API from javascript.
+
+You are going to use Javascript api , that will invoke platform api...
+
+Setup:
+ You have to lanuch the app in android studio
+
+Create  A Custom Native Module File:
+....................................
+android/app/src/main/java/com/CalendarMoudle.java 
+
+package com.customnativemoduleapp;
+
+import com.facebook.react.bridge.ReactApplicationContext;
+import com.facebook.react.bridge.ReactContextBaseJavaModule;
+
+public class CalendarModule extends ReactContextBaseJavaModule {
+       CalendarModule(ReactApplicationContext context){
+           super(context);
+       }
+
+}
+
+Module Name:
+ All java /kt native mouldes in android need to implement the getName method.
+ The method returns String, which represents the name of the native module.
+ The native moudle can then be accessed in javascript using its name.
+
+package com.customnativemoduleapp;
+
+import androidx.annotation.NonNull;
+
+import com.facebook.react.bridge.ReactApplicationContext;
+import com.facebook.react.bridge.ReactContextBaseJavaModule;
+
+public class CalendarModule extends ReactContextBaseJavaModule {
+       CalendarModule(ReactApplicationContext context){
+           super(context);
+       }
+
+    @NonNull
+    @Override
+    public String getName() {
+        return "CalendarModule";
+    }
+}
+
+How to access this in Javascript:
+
+const {CalendarModule} = ReactNative.NativeModules;
+
+Export a Native method to javascript:
+.....................................
+ We need to add api which access low level services, which to be invoked from the javascript.
+The method which is annoated with @ReactMethod
+
+package com.customnativemoduleapp;
+
+import androidx.annotation.NonNull;
+
+import com.facebook.react.bridge.ReactApplicationContext;
+import com.facebook.react.bridge.ReactContextBaseJavaModule;
+import com.facebook.react.bridge.ReactMethod;
+
+public class CalendarModule extends ReactContextBaseJavaModule {
+       CalendarModule(ReactApplicationContext context){
+           super(context);
+       }
+
+    @NonNull
+    @Override
+    public String getName() {
+        return "CalendarModule";
+    }
+    @ReactMethod
+    public void createCalendarEvent(String name,String location){
+    
+    }
+}
+
+Adding Debug Logger:
+....................
+ Ensure that method is called or not .
+
+package com.customnativemoduleapp;
+
+import android.util.Log;
+
+import androidx.annotation.NonNull;
+
+import com.facebook.react.bridge.ReactApplicationContext;
+import com.facebook.react.bridge.ReactContextBaseJavaModule;
+import com.facebook.react.bridge.ReactMethod;
+
+public class CalendarModule extends ReactContextBaseJavaModule {
+    CalendarModule(ReactApplicationContext context) {
+        super(context);
+    }
+
+    @NonNull
+    @Override
+    public String getName() {
+        return "CalendarModule";
+    }
+
+    @ReactMethod
+    public void createCalendarEvent(String name, String location) {
+        Log.d("CalendarModule", "create event called with name" + name + "and location" + location);
+    }
+}
+
+Synchronous and Asynchronous Methods:
+.....................................
+ By default, all native methods return results to userinterface asyn , but some times i want to return results sync... UI need to be blocked for some time until the response is ready.
+
+How to make sync method?
+@ReactMethod(isBlockingsync=true){
+
+}
+
+package com.customnativemoduleapp;
+
+import android.util.Log;
+
+import androidx.annotation.NonNull;
+
+import com.facebook.react.bridge.ReactApplicationContext;
+import com.facebook.react.bridge.ReactContextBaseJavaModule;
+import com.facebook.react.bridge.ReactMethod;
+
+public class CalendarModule extends ReactContextBaseJavaModule {
+    CalendarModule(ReactApplicationContext context) {
+        super(context);
+    }
+
+    @NonNull
+    @Override
+    public String getName() {
+        return "CalendarModule";
+    }
+
+    //@ReactMethod(isBlockingSynchronousMethod = false)
+    @ReactMethod
+    public void createCalendarEvent(String name, String location) {
+        Log.d("CalendarModule", "create event called with name" + name + "and location" + location);
+    }
+}
+
+Note: 
+ You must not block methods unncessarily, if you do so, you will get perfomance issues.
+.
+
+Register the Module:
+
+ All React Native modules must be registered  once it written, 
+
+Create class called ReactPackage class where all modules must be registered.
+
+MyApplicationPackage.java
+package com.customnativemoduleapp;
+
+import androidx.annotation.NonNull;
+
+import com.facebook.react.ReactPackage;
+import com.facebook.react.bridge.NativeModule;
+import com.facebook.react.bridge.ReactApplicationContext;
+import com.facebook.react.uimanager.ViewManager;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
+public class MyApplicationPackage implements ReactPackage {
+    @NonNull
+    @Override
+    public List<ViewManager> createViewManagers(@NonNull ReactApplicationContext reactApplicationContext) {
+        return Collections.emptyList();
+    }
+
+    @NonNull
+    @Override
+    public List<NativeModule> createNativeModules(@NonNull ReactApplicationContext reactApplicationContext) {
+        List<NativeModule> modules = new ArrayList<>();
+        modules.add(new CalendarModule(reactApplicationContext));
+        
+        return modules;
+    }
+}
+.............
+Registration packages with Application:
+
+MainApplication.java
+ @Override
+        protected List<ReactPackage> getPackages() {
+          @SuppressWarnings("UnnecessaryLocalVariable")
+          List<ReactPackage> packages = new PackageList(this).getPackages();
+          // Packages that cannot be autolinked yet can be added manually here, for example:
+          // packages.add(new MyReactNativePackage());
+            packages.add(new MyApplicationPackage());
+          return packages;
+        }
+....................................................................................
+Test :
+.......
+import { NativeModules, Button, View } from "react-native";
+
+const { CalendarModule } = NativeModules;
+
+function App() {
+    return <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+        <Button title="CreateEvent" onPress={() => {
+            // console.log(modules)
+            CalendarModule.createCalendarEvent('learn react native', 'IBM')
+        }} />
+    </View>
+}
+
+export default App;
+
+You see the messages in android studio log cat.
+
+.....................................................................................
+				Native Methods
+.....................................................................................
+
+Method can return result back to react native code(js) 
+
+Since most of the time native methods are async methods, results can be returned via callbacks or promises.
+
+
+
+
+package com.customnativemoduleapp;
+
+import android.util.Log;
+
+import androidx.annotation.NonNull;
+
+import com.facebook.react.bridge.Callback;
+import com.facebook.react.bridge.Promise;
+import com.facebook.react.bridge.ReactApplicationContext;
+import com.facebook.react.bridge.ReactContextBaseJavaModule;
+import com.facebook.react.bridge.ReactMethod;
+
+public class CalendarModule extends ReactContextBaseJavaModule {
+    CalendarModule(ReactApplicationContext context) {
+        super(context);
+    }
+
+    @NonNull
+    @Override
+    public String getName() {
+        return "CalendarModule";
+    }
+
+    //@ReactMethod(isBlockingSynchronousMethod = false)
+//    @ReactMethod
+//    public void createCalendarEvent(String name, String location) {
+//        Log.d("CalendarModule", "create event called with name" + name + "and location" + location);
+//    }
+
+    //callback based
+//    @ReactMethod
+//    public void createCalendarEvent(String name, String location, Callback callback) {
+//        Log.d("CalendarModule", "create event called with name" + name + "and location" + location);
+//        //talking low level service and once the result is available, we can send result to javascript
+//        Integer eventId = 100;
+//        callback.invoke(eventId);
+//    }
+    //Promsise based
+    @ReactMethod
+    public void createCalendarEvent(String name, String location, Promise promise) {
+        Log.d("CalendarModule", "create event called with name" + name + "and location" + location);
+        //talking low level service and once the result is available, we can send result to javascript
+//        Integer eventId = 100;
+        //  callback.invoke(eventId);
+        try {
+            Integer eventId = 1000;
+            promise.resolve(eventId);
+        } catch (Exception e) {
+            promise.reject("Cant create Event", e);
+        }
+    }
+}
+
+Javascript:
+import { NativeModules, Button, View, Alert } from "react-native";
+
+const { CalendarModule } = NativeModules;
+
+function App() {
+    const onGetResult = async () => {
+        // CalendarModule.createCalendarEvent('Learn React Native', 'Online', eventId => {
+        //     Alert.alert(`${eventId}`)
+        // });
+        try {
+            const eventId = await CalendarModule.createCalendarEvent('Learn React Native', 'Online')
+            Alert.alert(`${eventId}`)
+        }
+        catch (e) {
+            Alert.alert(`${e.getMessage()}`)
+        }
+
+    }
+
+    return <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+        <Button title="CreateEvent" onPress={() => {
+            CalendarModule.createCalendarEvent('learn react native', 'IBM')
+        }} />
+        <Button title="CreateEvent With Result" onPress={onGetResult} />
+    </View>
+}
+
+export default App;
+.....................................................................................
+				 Redux Integration
+.....................................................................................
+
+What is Redux?
+ Redux is a lib, to manage state of application.
+
+State of the application is maintained in the many places
+
+1.With in application
+  with in component - using state
+2.outside application
+   redux
+
+Why we need redux?
+ Redux is necessary when your app state is shared across the application.
+ Redux is necessary when many team of people working on single code base.
+ 
+React with Redux is based on the design called "flux design pattern"
+
+Core concepts:
+1.State
+   Redux maintains or stores the data in single object called as application state.
+2.Store:
+   Store is object where redux application  state lives
+   Store offers api to communicate from react and redux to react
+
+3.Reducer 
+   It is pure function which always returns immutable object
+
+4.actions
+   Request payload , contains what todo.
+   actions are plain objects
+5.Dispatcher
+   It is transporter which transports action object from react to redux.
+
+6.React-Redux binding object
+   It responsible to transfer state from redux to react and react to redux.
+.....................................................................................
+			 Redux lib
+
+in order to redux we have two implementations
+
+1.old redux
+2.modern redux
+
+We are going to modern redux called redux-toolkit.
+
+npm install @reduxjs/toolkit react-redux
+
+
+import { configureStore } from '@reduxjs/toolkit'
+import { View, StyleSheet, Text, Button, Alert } from 'react-native'
+import { Provider, useSelector, useDispatch } from 'react-redux'
+
+//Step:1 Delcare reducer
+const CounterReducer = (intialState = { counter: 10 }, action) => {
+    //biz logic
+    switch (action.type) {
+        case 'counter/increment':
+            return { ...intialState, counter: intialState.counter + 1 }
+        default:
+            return intialState
+    }
+}
+//create store obejct 
+const store = configureStore({
+    reducer: {
+        //list of reducers
+        counter: CounterReducer
+    }
+})
+
+
+
+//Compoment which recieves state from Redux and also send action(request for muation)
+
+const Counter = props => {
+    //grab redux state via hook: useSelector
+    const value = useSelector(state => {
+        //appState.reducerName
+        return state.counter
+    })
+
+    //declare dispatcher
+    const dispatch = useDispatch();
+
+    const onIncrement = () => {
+        //pass action: action is just object having key called type 
+        dispatch({
+            type: 'counter/increment'
+        })
+    }
+    return <>
+        <Text style={{ fontWeight: 'bold', fontSize: 20 }}>Counter {value.counter} </Text>
+        <Button title="OnIncrement" onPress={onIncrement} />
+    </>
+}
+
+
+const App = () => {
+    return <Provider store={store}>
+        <View style={styles.container}>
+            <Counter />
+        </View>
+    </Provider>
+}
+export default App;
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center'
+    }
+})
+
+.................
+
+Multliple Reducers:
+import { configureStore } from '@reduxjs/toolkit'
+import { View, StyleSheet, Text, Button, Alert } from 'react-native'
+import { Provider, useSelector, useDispatch } from 'react-redux'
+
+const CounterReducer = (intialState = { counter: 10 }, action) => {
+    //biz logic
+    switch (action.type) {
+        case 'counter/increment':
+            return { ...intialState, counter: intialState.counter + 1 }
+        default:
+            return intialState
+    }
+}
+const ReviewReducer = (intialState = { like: 10 }, action) => {
+    //biz logic
+    switch (action.type) {
+        case 'review/like':
+            return { ...intialState, like: intialState.like + 1 }
+        default:
+            return intialState
+    }
+}
+//create store obejct 
+const store = configureStore({
+    reducer: {
+        //list of reducers
+        counter: CounterReducer,
+        like: ReviewReducer
+    }
+})
+
+const Counter = props => {
+    //grab redux state via hook: useSelector
+    const value = useSelector(state => {
+        //appState.reducerName
+        console.log(state)
+        return state.counter
+    })
+
+    //declare dispatcher
+    const dispatch = useDispatch();
+
+    const onIncrement = () => {
+        //pass action: action is just object having key called type 
+        dispatch({
+            type: 'counter/increment'
+        })
+    }
+    return <>
+        <Text style={{ fontWeight: 'bold', fontSize: 20 }}>Counter {value.counter} </Text>
+        <Button title="OnIncrement" onPress={onIncrement} />
+    </>
+}
+
+const Like = props => {
+    //grab redux state via hook: useSelector
+    const value = useSelector(state => {
+        //appState.reducerName
+        return state.like
+    })
+
+    //declare dispatcher
+    const dispatch = useDispatch();
+
+    const onIncrement = () => {
+        //pass action: action is just object having key called type 
+        dispatch({
+            type: 'review/like'
+        })
+    }
+    return <>
+        <Text style={{ fontWeight: 'bold', fontSize: 20 }}>Like {value.like} </Text>
+        <Button title="OnIncrement" onPress={onIncrement} />
+    </>
+}
+
+
+const App = () => {
+    return <Provider store={store}>
+        <View style={styles.container}>
+            <Counter />
+            <Like />
+        </View>
+    </Provider>
+}
+export default App;
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center'
+    }
+})
+.....................................................................................
+			   React and Redux - State mutation
+.....................................................................................
+In React ,Objects must be mutated by using pure functions and immuablity.
+
+When we deal with nested object we face issues, we face complexity...
+
+let customer = {
+  id:1,
+  name:'Subramanian'
+  contact: {
+	address: {
+	  city:'Xx'
+	}
+   }
+}
+Here i want to update city using immutablity
+
+Syntax:
+
+ function UpdateCity(customer,city){
+
+	return {
+	    ...customer, -level-0,id,name,contact
+	      contact: {
+		...customer.contact, //level-1
+		contact:{
+		  ...customer.contact.address, // level-2
+                    city:city
+		}
+	      }
+         }
+ }
+
+ updateCity({
+  id:1,
+  name:'Subramanian'
+  contact: {
+	address: {
+	  city:'Xx'
+	}
+   }
+},'coimbatore')
+
+normal js
+ customer.contact.adress.city=city
+.....................................................................................
+				immer js
+
+immer js is lib which abstracts complxity of writing immutable code in mutable way...
+import { configureStore } from '@reduxjs/toolkit'
+import { produce } from 'immer'
+import { View, StyleSheet, Text, Button, Alert } from 'react-native'
+import { Provider, useSelector, useDispatch } from 'react-redux'
+
+//Step:1 Delcare reducer
+const CounterReducer = (intialState = { counter: 10 }, action) => {
+    //biz logic
+    switch (action.type) {
+        case 'counter/increment':
+            //return { ...intialState, counter: intialState.counter + 1 }
+            return produce(intialState, draftState => {
+                draftState.counter += 1
+            })
+        default:
+            return intialState
+    }
+}
+//create store obejct 
+const store = configureStore({
+    reducer: {
+        //list of reducers
+        counter: CounterReducer
+    }
+})
+
+
+
+//Compoment which recieves state from Redux and also send action(request for muation)
+
+const Counter = props => {
+    //grab redux state via hook: useSelector
+    const value = useSelector(state => {
+        //appState.reducerName
+        return state.counter
+    })
+
+    //declare dispatcher
+    const dispatch = useDispatch();
+
+    const onIncrement = () => {
+        //pass action: action is just object having key called type 
+        dispatch({
+            type: 'counter/increment'
+        })
+    }
+    return <>
+        <Text style={{ fontWeight: 'bold', fontSize: 20 }}>Counter {value.counter} </Text>
+        <Button title="OnIncrement" onPress={onIncrement} />
+    </>
+}
+
+
+const App = () => {
+    return <Provider store={store}>
+        <View style={styles.container}>
+            <Counter />
+        </View>
+    </Provider>
+}
+export default App;
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center'
+    }
+})
+...................................................................................
+				 Reducers Patterns
+
+1.old way of writting reducers
+2.createReducer function
+3.createSlice function
+
+
+1.old way of writting reducers
+
+const CounterReducer = (intialState = { counter: 10 }, action) => {
+    //biz logic
+    switch (action.type) {
+        case 'counter/increment':
+            //return { ...intialState, counter: intialState.counter + 1 }
+            return produce(intialState, draftState => {
+                draftState.counter += 1
+            })
+        default:
+            return intialState
+    }
+}
+
+2.createReducer,create slice
+import { configureStore, createReducer, createSlice } from '@reduxjs/toolkit'
+import { produce } from 'immer'
+import { View, StyleSheet, Text, Button, Alert } from 'react-native'
+import { Provider, useSelector, useDispatch } from 'react-redux'
+
+//old way of writting reducers
+// const CounterReducer = (intialState = { counter: 10 }, action) => {
+//     //biz logic
+//     switch (action.type) {
+//         case 'counter/increment':
+//             //return { ...intialState, counter: intialState.counter + 1 }
+//             return produce(intialState, draftState => {
+//                 draftState.counter += 1
+//             })
+//         default:
+//             return intialState
+//     }
+// }
+//new way: createReducer
+
+// const CounterReducer = createReducer(initalState = { counter: 100 }, builder => {
+//     builder.addCase('counter/increment', (state, action) => {
+//         //internally it is using immer js produce function
+//         state.counter++
+//     }).addDefaultCase((state, action) => {
+//         console.log('default case', state)
+//     })
+// })
+
+//new way create slice:
+const CounterSlice = createSlice({
+    name: 'Counter',
+    initialState: {
+        counter: 1002
+    },
+    reducers: {
+        increment(state) {
+            state.counter++
+        }
+    },
+    extraReducers: builder => {
+        builder.addDefaultCase((state, action) => { })
+    }
+})
+//Extract reducers and actions 
+const { increment } = CounterSlice.actions
+const CounterReducer = CounterSlice.reducer
+
+
+//create store obejct 
+const store = configureStore({
+    reducer: {
+        //list of reducers
+        counter: CounterReducer
+    }
+})
+
+
+
+//Compoment which recieves state from Redux and also send action(request for muation)
+
+const Counter = props => {
+    //grab redux state via hook: useSelector
+    const value = useSelector(state => {
+        //appState.reducerName
+        return state.counter
+    })
+
+    //declare dispatcher
+    const dispatch = useDispatch();
+
+    const onIncrement = () => {
+        //pass action: action is just object having key called type 
+        dispatch({
+            type: increment
+            //type: 'counter/increment'
+        })
+    }
+    return <>
+        <Text style={{ fontWeight: 'bold', fontSize: 20 }}>Counter {value.counter} </Text>
+        <Button title="OnIncrement" onPress={onIncrement} />
+    </>
+}
+
+
+const App = () => {
+    return <Provider store={store}>
+        <View style={styles.container}>
+            <Counter />
+        </View>
+    </Provider>
+}
+export default App;
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center'
+    }
+})
+
+
+
+
+
+
+
+
+
+
+
